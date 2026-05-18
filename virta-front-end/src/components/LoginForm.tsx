@@ -32,7 +32,7 @@ export function LoginForm({ onToggleRegister }: LoginFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="relative w-full max-w-md rounded-2xl bg-white p-8 lg:p-10 border border-zinc-200"
+      className="relative w-full max-w-md rounded-2xl bg-white p-8 lg:p-10 border border-zinc-200 animate-fade-in-up"
       style={{ boxShadow: "var(--shadow-elegant)" }}
     >
       <div className="mb-8 space-y-2 text-center">

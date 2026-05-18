@@ -9,19 +9,26 @@
     "form": {
       "title": "Welcome to Virta",
       "title_register": "Create your account",
+      "title_verify": "Verify your email",
       "description": "Log in to continue",
       "description_register": "Sign up to get started",
+      "description_verify": "We have sent a 6-digit activation code to your email.",
       "name_label": "Full Name",
       "name_placeholder": "Enter your full name",
       "email_label": "Email",
       "email_placeholder": "Enter your email",
       "password_label": "Password",
-      "password_placeholder": "Enter your password"
+      "password_placeholder": "Enter your password",
+      "confirm_password_label": "Confirm Password",
+      "confirm_password_placeholder": "Re-enter your password",
+      "code_label": "Verification Code"
     },
 
     "actions": {
       "submit": "Sign in",
       "submit_register": "Sign up",
+      "submit_verify": "Confirm Code",
+      "cancel": "Cancel and return to sign in",
       "loading": "Loading...",
       "forgot_password": "Forgot your password?",
       "form_register": "Don't have an account? Sign up",
@@ -39,7 +46,13 @@
       "email_required": "Email is required",
       "email_invalid": "Invalid email format",
       "password_required": "Password is required",
-      "password_min": "Password must be at least 6 characters"
+      "password_min": "Password must be at least 6 characters",
+      "password_mismatch": "Passwords do not match",
+      "req_length": "Minimum of 8 characters",
+      "req_upper": "One uppercase letter",
+      "req_lower": "One lowercase letter",
+      "req_number": "One number",
+      "req_special": "One special character (@$!%*?&#)"
     }
   }
 }

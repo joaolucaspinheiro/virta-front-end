@@ -9,19 +9,26 @@
     "form": {
       "title": "Bem-vindo ao Virta",
       "title_register": "Crie sua conta",
+      "title_verify": "Verifique seu e-mail",
       "description": "Faça login para continuar",
       "description_register": "Cadastre-se para começar",
+      "description_verify": "Inserimos um código de ativação de 6 dígitos no seu e-mail.",
       "name_label": "Nome Completo",
       "name_placeholder": "Digite seu nome completo",
+      "code_label": "Código de Verificação",
       "email_label": "Email",
       "email_placeholder": "Digite seu email",
       "password_label": "Senha",
-      "password_placeholder": "Digite sua senha"
+      "password_placeholder": "Digite sua senha",
+      "confirm_password_label": "Confirmar Senha",
+      "confirm_password_placeholder": "Digite a senha novamente"
     },
 
     "actions": {
       "submit": "Entrar",
       "submit_register": "Cadastrar",
+      "submit_verify": "Confirmar Código",
+      "cancel": "Cancelar e voltar ao login",
       "loading": "Carregando...",
       "forgot_password": "Esqueceu sua senha?",
       "form_register": "Não tem uma conta? Cadastre-se",
@@ -39,7 +46,13 @@
       "email_required": "Email é obrigatório",
       "email_invalid": "Formato de email inválido",
       "password_required": "Senha é obrigatória",
-      "password_min": "A senha deve ter pelo menos 6 caracteres"
+      "password_min": "A senha deve ter pelo menos 6 caracteres",
+      "password_mismatch": "As senhas não coincidem",
+      "req_length": "Mínimo de 8 caracteres",
+      "req_upper": "Uma letra maiúscula",
+      "req_lower": "Uma letra minúscula",
+      "req_number": "Um número",
+      "req_special": "Um caractere especial (@$!%*?&#)"
     }
   }
 }

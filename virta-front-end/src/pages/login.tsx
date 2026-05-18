@@ -2,9 +2,11 @@ import { useState } from "react";
 import { HeroSection } from "@/components/HeroSection";
 import { LoginForm } from "@/components/LoginForm";
 import { RegisterForm } from "@/components/RegisterForm";
+import { VerificationForm } from "@/components/VerificationForm";
 
 export function LoginPage() {
-  const [isRegister, setIsRegister] = useState(false);
+  // Substituímos o booleano por uma Máquina de Estados profissional de 3 etapas
+  const [step, setStep] = useState<"login" | "register" | "verify">("login");
 
   return (
     <main className="min-h-screen grid lg:grid-cols-2 bg-background">
@@ -22,11 +24,25 @@ export function LoginPage() {
           }}
         />
 
-        {/* Escolha Dinâmica baseada no Estado */}
-        {isRegister ? (
-          <RegisterForm onToggleLogin={() => setIsRegister(false)} />
-        ) : (
-          <LoginForm onToggleRegister={() => setIsRegister(true)} />
+        {/* Gerenciamento das 3 Telas baseadas no Step */}
+        {step === "login" && (
+          <LoginForm onToggleRegister={() => setStep("register")} />
+        )}
+
+        {step === "register" && (
+          <RegisterForm
+            onToggleLogin={() => setStep("login")}
+            onSignUpSuccess={() => setStep("verify")}
+          />
+        )}
+
+        {step === "verify" && (
+          <VerificationForm
+            onSuccess={() =>
+              console.log("Usuário Confirmado! Redirecionar pro Dashboard.")
+            }
+            onCancel={() => setStep("login")}
+          />
         )}
       </section>
     </main>

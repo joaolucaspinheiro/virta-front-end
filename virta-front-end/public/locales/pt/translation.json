@@ -8,17 +8,20 @@
 
     "form": {
       "title": "Bem-vindo ao Virta",
+      "title_register": "Crie sua conta",
       "description": "Faça login para continuar",
-
+      "description_register": "Cadastre-se para começar",
+      "name_label": "Nome Completo",
+      "name_placeholder": "Digite seu nome completo",
       "email_label": "Email",
       "email_placeholder": "Digite seu email",
-
       "password_label": "Senha",
       "password_placeholder": "Digite sua senha"
     },
 
     "actions": {
       "submit": "Entrar",
+      "submit_register": "Cadastrar",
       "loading": "Carregando...",
       "forgot_password": "Esqueceu sua senha?",
       "form_register": "Não tem uma conta? Cadastre-se",

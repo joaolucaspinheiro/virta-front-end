@@ -8,17 +8,20 @@
 
     "form": {
       "title": "Welcome to Virta",
+      "title_register": "Create your account",
       "description": "Log in to continue",
-
+      "description_register": "Sign up to get started",
+      "name_label": "Full Name",
+      "name_placeholder": "Enter your full name",
       "email_label": "Email",
       "email_placeholder": "Enter your email",
-
       "password_label": "Password",
       "password_placeholder": "Enter your password"
     },
 
     "actions": {
       "submit": "Sign in",
+      "submit_register": "Sign up",
       "loading": "Loading...",
       "forgot_password": "Forgot your password?",
       "form_register": "Don't have an account? Sign up",

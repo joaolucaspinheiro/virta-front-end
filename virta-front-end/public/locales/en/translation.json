@@ -1,13 +1,43 @@
 {
   "login": {
-    "branding_title": "The management platform from now to the future",
-    "branding_description": "Track your finances, organize your tasks and connect with your collaborators",
-    "footer": "@ 2026 Virta. All rights reserved.",
-    "title": "Login Area",
-    "description": "Access your account to manage your flow",
-    "email": "Email",
-    "password": "Password",
-    "button": "Sign in",
-    "toast_success": "Access authorized!"
+    "branding": {
+      "title": "The management platform from now to the future",
+      "description": "Track your finances, organize your tasks and connect with your collaborators",
+      "footer": "© 2026 Virta. All rights reserved."
+    },
+
+    "form": {
+      "title": "Welcome to Virta",
+      "description": "Log in to continue",
+
+      "email_label": "Email",
+      "email_placeholder": "Enter your email",
+
+      "password_label": "Password",
+      "password_placeholder": "Enter your password"
+    },
+
+    "actions": {
+      "submit": "Sign in",
+      "loading": "Loading..."
+    },
+
+    "messages": {
+      "success": "Access authorized!",
+      "error": "Invalid email or password!",
+      "generic_error": "An error occurred while trying to log in. Please try again later."
+    },
+
+    "validation": {
+      "email_required": "Email is required",
+      "email_invalid": "Invalid email format",
+      "password_required": "Password is required",
+      "password_min": "Password must be at least 6 characters"
+    },
+
+    "links": {
+      "forgot_password": "Forgot your password?",
+      "register": "Don't have an account? Sign up"
+    }
   }
 }

@@ -8,6 +8,33 @@ export function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isRegister, setIsRegister] = useState(false);
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      // simulação de request
+      await new Promise((r) => setTimeout(r, 1000));
+
+      if (isRegister) {
+        console.log("registrando usuário...");
+      } else {
+        console.log("fazendo login...");
+      }
+
+      // sucesso
+      console.log("success");
+    } catch (err) {
+      setError("Erro ao autenticar");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -40,45 +67,57 @@ export function LoginPage() {
         {/* Proposta de valor */}
         <div className="max-w-md">
           <h1 className="text-4xl font-bold mb-6">
-            {t("login.branding_title")}
+            {t("login.branding.title")}
           </h1>
           <p className="text-lg font-bold mb-6">
-            {t("login.branding_description")}
+            {t("login.branding.description")}
           </p>
         </div>
         {/* Rodapé */}
-        <div className="text-sm text-brand-200">{t("login.footer")}</div>
+        <div className="text-sm text-brand-200">
+          {t("login.branding.footer")}
+        </div>
       </div>
 
       {/* Formulario */}
       <div className="flex-1 bg-zinc-50 flex items-center justify-center">
-        <form className="w-full max-w-md bg-zinc-50 p-8 rounded-2xl shadow-lg">
+        <form
+          className="w-full max-w-md bg-zinc-50 p-8 rounded-2xl shadow-lg"
+          onSubmit={handleSubmit}
+        >
+          {error && (
+            <p className="text-red-500 text-sm text-center mb-4">{error}</p>
+          )}
           <h2 className="text-2xl font-bold text-zinc-900 mb-2 text-center">
-            Bem-vindo ao Virta
+            {t("login.form.title")}
           </h2>
           <p className="text-sm text-zinc-600 text-center mb-6 leading-tight">
-            Faça login ou registre-se
+            {t("login.form.description")}
           </p>
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Email</label>
+            <label className="block text-sm font-medium mb-2">
+              {t("login.form.email_label")}
+            </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border  rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-500"
-              placeholder="Digite seu email"
+              className="w-full px-4 py-3 border  rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-500/30"
+              placeholder={t("login.form.email_placeholder")}
             />
           </div>
 
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-2">Senha</label>
+            <label className="block text-sm font-medium mb-2">
+              {t("login.form.password_label")}
+            </label>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border  rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-500"
-                placeholder="Digite sua senha"
+                className="w-full px-4 py-3 border  rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-500/30"
+                placeholder={t("login.form.password_placeholder")}
               />
               <button
                 type="button"
@@ -92,9 +131,17 @@ export function LoginPage() {
 
           <button
             type="submit"
-            className="w-full bg-brand-500 text-white py-3 rounded-lg"
+            disabled={loading}
+            className="w-full bg-brand-500 text-white py-3 rounded-lg disabled:opacity-50"
           >
-            Entrar
+            {loading ? t("login.actions.loading") : t("login.actions.submit")}
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsRegister((prev) => !prev)}
+            className="mt-4 text-sm text-brand-500 hover:underline w-full"
+          >
+            {isRegister ? "Já tem conta? Entrar" : "Não tem conta? Criar conta"}
           </button>
         </form>
       </div>

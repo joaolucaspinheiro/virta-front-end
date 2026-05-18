@@ -1,13 +1,43 @@
 {
   "login": {
-    "branding_title": "A plataforma de gestão do agora para o futuro",
-    "branding_description": "Acompanhe suas finanças, organize suas tarefas e conecte-se com seus colaboradores",
-    "footer": "@ 2026 Virta. Todos os direitos reservados.",
-    "title": "Área de login",
-    "description": "Acesse sua conta para gerenciar seu fluxo",
-    "email": "E-mail",
-    "password": "Senha",
-    "button": "Entrar no sistema",
-    "toast_success": "Acesso autorizado!"
+    "branding": {
+      "title": "A plataforma de gestão do presente ao futuro",
+      "description": "Acompanhe suas finanças, organize suas tarefas e conecte-se com seus colaboradores",
+      "footer": "© 2026 Virta. Todos os direitos reservados."
+    },
+
+    "form": {
+      "title": "Bem-vindo ao Virta",
+      "description": "Faça login para continuar",
+
+      "email_label": "Email",
+      "email_placeholder": "Digite seu email",
+
+      "password_label": "Senha",
+      "password_placeholder": "Digite sua senha"
+    },
+
+    "actions": {
+      "submit": "Entrar",
+      "loading": "Carregando..."
+    },
+
+    "messages": {
+      "success": "Acesso autorizado!",
+      "error": "Email ou senha inválidos!",
+      "generic_error": "Ocorreu um erro ao tentar fazer login. Tente novamente mais tarde."
+    },
+
+    "validation": {
+      "email_required": "Email é obrigatório",
+      "email_invalid": "Formato de email inválido",
+      "password_required": "Senha é obrigatória",
+      "password_min": "A senha deve ter pelo menos 6 caracteres"
+    },
+
+    "links": {
+      "forgot_password": "Esqueceu sua senha?",
+      "register": "Não tem uma conta? Cadastre-se"
+    }
   }
 }

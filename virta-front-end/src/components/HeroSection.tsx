@@ -74,10 +74,6 @@ export function HeroSection() {
 
       {/* Headline */}
       <div className="relative z-10 max-w-xl space-y-6">
-        <span className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur ring-1 ring-white/15 px-3 py-1 text-xs font-medium tracking-wide uppercase">
-          <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
-          Virta
-        </span>
         <h1 className="text-4xl lg:text-6xl font-bold tracking-tight leading-[1.05]">
           {t("login.branding.title")}
         </h1>

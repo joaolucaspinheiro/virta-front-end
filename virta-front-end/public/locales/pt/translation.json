@@ -19,7 +19,11 @@
 
     "actions": {
       "submit": "Entrar",
-      "loading": "Carregando..."
+      "loading": "Carregando...",
+      "forgot_password": "Esqueceu sua senha?",
+      "form_register": "Não tem uma conta? Cadastre-se",
+      "login_with_google": "Entrar com Google",
+      "form_login": "Já tem uma conta? Faça login"
     },
 
     "messages": {
@@ -33,11 +37,6 @@
       "email_invalid": "Formato de email inválido",
       "password_required": "Senha é obrigatória",
       "password_min": "A senha deve ter pelo menos 6 caracteres"
-    },
-
-    "links": {
-      "forgot_password": "Esqueceu sua senha?",
-      "register": "Não tem uma conta? Cadastre-se"
     }
   }
 }

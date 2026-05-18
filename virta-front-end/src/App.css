@@ -14,6 +14,19 @@
     50% { transform: translateY(-3px); }
   }
 }
+:root{
+  --wave-1: #1e3a8a;
+  --wave-2: #2563eb;
+  --wave-3: #60a5fa;
+  --gradient-hero: linear-gradient(135deg, #0f1d4d 0%, #1e3a8a 50%, #2d52a8 100%);
+  --gradient-primary: linear-gradient(135deg, #1e3a8a 0%, #3b6fd6 100%);
+  --shadow-elegant: 0 30px 80px -30px rgb(15 29 77 / 0.35), 0 10px 30px -15px rgb(15 29 77 / 0.2);
+}
+
+@keyframes wave {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
 .counter {
   font-size: 16px;
   padding: 5px 10px;

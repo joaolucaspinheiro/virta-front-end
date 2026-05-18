@@ -19,7 +19,11 @@
 
     "actions": {
       "submit": "Sign in",
-      "loading": "Loading..."
+      "loading": "Loading...",
+      "forgot_password": "Forgot your password?",
+      "form_register": "Don't have an account? Sign up",
+      "login_with_google": "Sign in with Google",
+      "form_login": "Already have an account? Sign in"
     },
 
     "messages": {
@@ -33,11 +37,6 @@
       "email_invalid": "Invalid email format",
       "password_required": "Password is required",
       "password_min": "Password must be at least 6 characters"
-    },
-
-    "links": {
-      "forgot_password": "Forgot your password?",
-      "register": "Don't have an account? Sign up"
     }
   }
 }

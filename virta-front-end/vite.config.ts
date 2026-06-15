@@ -13,4 +13,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      '/auth': 'http://localhost:8080',
+    },
+  },
 })

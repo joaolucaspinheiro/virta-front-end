@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { apiRegister } from "@/lib/api";
 
 type RegisterFormProps = {
   onToggleLogin: () => void;
@@ -43,15 +44,10 @@ export function RegisterForm({
 
     setLoading(true);
     try {
-      await new Promise((r) => setTimeout(r, 1500));
-      console.log("Usuário criado pendente de ativação no Java Spring:", {
-        name,
-        email,
-        password,
-      });
+      await apiRegister(name, email, password);
       onSignUpSuccess();
-    } catch {
-      setError("login.messages.generic_error"); // Usando a chave genérica do seu JSON
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "login.messages.generic_error");
     } finally {
       setLoading(false);
     }

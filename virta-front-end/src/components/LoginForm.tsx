@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { apiLogin } from "@/lib/api";
 
 type LoginFormProps = {
   onToggleRegister: () => void;
@@ -19,11 +20,11 @@ export function LoginForm({ onToggleRegister }: LoginFormProps) {
     setLoading(true);
     setError(null);
     try {
-      await new Promise((r) => setTimeout(r, 1000));
-      console.log("Fazendo login com os dados:", { email, password });
-      console.log("success");
-    } catch {
-      setError("Erro ao autenticar");
+      const data = await apiLogin(email, password);
+      localStorage.setItem("token", data.token);
+      console.log("Login efetuado:", data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erro ao autenticar");
     } finally {
       setLoading(false);
     }

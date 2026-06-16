@@ -56,11 +56,11 @@ export function RegisterForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="relative w-full max-w-md rounded-2xl bg-white p-8 lg:p-10 border border-zinc-200 animate-fade-in-up"
+      className="absolute w-full max-w-md rounded-2xl bg-white p-6 lg:p-8 border border-zinc-200 animate-fade-in-up"
       style={{ boxShadow: "var(--shadow-elegant)" }}
     >
-      <div className="mb-8 space-y-2 text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-zinc-900">
+      <div className="mb-4 space-y-1 text-center">
+        <h2 className="text-2xl font-bold tracking-tight text-zinc-900">
           {t("login.form.title_register")}
         </h2>
         <p className="text-sm text-zinc-600">
@@ -72,8 +72,8 @@ export function RegisterForm({
         <p className="text-red-500 text-sm text-center mb-4">{t(error)}</p>
       )}
 
-      <div className="space-y-5">
-        <div className="space-y-2">
+      <div className="space-y-3">
+        <div className="space-y-1">
           <label htmlFor="name" className="text-sm font-medium text-zinc-900">
             {t("login.form.name_label")}
           </label>
@@ -84,11 +84,11 @@ export function RegisterForm({
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder={t("login.form.name_placeholder")}
-            className="w-full h-12 px-4 rounded-lg border border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 outline-none transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10"
+            className="w-full h-10 px-4 rounded-lg border border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 outline-none transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10"
           />
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1">
           <label htmlFor="email" className="text-sm font-medium text-zinc-900">
             {t("login.form.email_label")}
           </label>
@@ -99,11 +99,11 @@ export function RegisterForm({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder={t("login.form.email_placeholder")}
-            className="w-full h-12 px-4 rounded-lg border border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 outline-none transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10"
+            className="w-full h-10 px-4 rounded-lg border border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 outline-none transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10"
           />
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1">
           <label
             htmlFor="password"
             className="text-sm font-medium text-zinc-900"
@@ -118,7 +118,7 @@ export function RegisterForm({
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder={t("login.form.password_placeholder")}
-              className="w-full h-12 px-4 pr-12 rounded-lg border border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 outline-none transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10"
+              className="w-full h-10 px-4 pr-12 rounded-lg border border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 outline-none transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10"
             />
             <button
               type="button"
@@ -132,53 +132,26 @@ export function RegisterForm({
                 <Eye className="h-4 w-4" />
               )}
             </button>
+            {password.length > 0 && (
+              <div className="top-full left-0 right-0 z-10 mt-1 p-2 bg-white rounded-lg border border-zinc-200 shadow-md text-xs grid grid-cols-2 gap-x-4 gap-y-1">
+                {[
+                  { ok: hasMinLength, label: t("login.validation.req_length") },
+                  { ok: hasUpper,     label: t("login.validation.req_upper") },
+                  { ok: hasLower,     label: t("login.validation.req_lower") },
+                  { ok: hasNumber,    label: t("login.validation.req_number") },
+                  { ok: hasSpecial,   label: t("login.validation.req_special") },
+                ].map(({ ok, label }) => (
+                  <div key={label} className={`flex items-center gap-1.5 ${ok ? "text-emerald-600 font-medium" : "text-zinc-400"}`}>
+                    <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${ok ? "bg-emerald-500" : "bg-zinc-300"}`} />
+                    {label}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
-        {password.length > 0 && (
-          <div className="p-3 bg-zinc-50 rounded-lg border border-zinc-100 space-y-1.5 text-xs transition-all animate-fade-in-up">
-            <div
-              className={`flex items-center gap-2 ${hasMinLength ? "text-emerald-600 font-medium" : "text-zinc-400"}`}
-            >
-              <span
-                className={`h-1.5 w-1.5 rounded-full ${hasMinLength ? "bg-emerald-500" : "bg-zinc-300"}`}
-              />
-              {t("login.validation.req_length")}
-            </div>
-            <div
-              className={`flex items-center gap-2 ${hasUpper ? "text-emerald-600 font-medium" : "text-zinc-400"}`}
-            >
-              <span
-                className={`h-1.5 w-1.5 rounded-full ${hasUpper ? "bg-emerald-500" : "bg-zinc-300"}`}
-              />
-              {t("login.validation.req_upper")}
-            </div>
-            <div
-              className={`flex items-center gap-2 ${hasLower ? "text-emerald-600 font-medium" : "text-zinc-400"}`}
-            >
-              <span
-                className={`h-1.5 w-1.5 rounded-full ${hasLower ? "bg-emerald-500" : "bg-zinc-300"}`}
-              />
-              {t("login.validation.req_lower")}
-            </div>
-            <div
-              className={`flex items-center gap-2 ${hasNumber ? "text-emerald-600 font-medium" : "text-zinc-400"}`}
-            >
-              <span
-                className={`h-1.5 w-1.5 rounded-full ${hasNumber ? "bg-emerald-500" : "bg-zinc-300"}`}
-              />
-              {t("login.validation.req_number")}
-            </div>
-            <div
-              className={`flex items-center gap-2 ${hasSpecial ? "text-emerald-600 font-medium" : "text-zinc-400"}`}
-            >
-              <span
-                className={`h-1.5 w-1.5 rounded-full ${hasSpecial ? "bg-emerald-500" : "bg-zinc-300"}`}
-              />
-              {t("login.validation.req_special")}
-            </div>
-          </div>
-        )}
-        <div className="space-y-2">
+
+        <div className="space-y-1">
           <label
             htmlFor="confirmPassword"
             className="text-sm font-medium text-zinc-900"
@@ -193,7 +166,7 @@ export function RegisterForm({
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder={t("login.form.confirm_password_placeholder")}
-              className="w-full h-12 px-4 pr-12 rounded-lg border border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 outline-none transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10"
+              className="w-full h-10 px-4 pr-12 rounded-lg border border-zinc-200 bg-white text-zinc-900 placeholder:text-zinc-400 outline-none transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10"
             />
             <button
               type="button"
@@ -213,7 +186,7 @@ export function RegisterForm({
         <button
           type="submit"
           disabled={loading}
-          className="group relative w-full h-12 rounded-lg font-semibold text-white overflow-hidden transition-all hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 cursor-pointer"
+          className="group relative w-full h-10 rounded-lg font-semibold text-white overflow-hidden transition-all hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:hover:translate-y-0 cursor-pointer"
           style={{ background: "var(--gradient-primary)" }}
         >
           <span className="relative z-10 inline-flex items-center justify-center gap-2">

@@ -9,12 +9,12 @@ export function LoginPage() {
   const [step, setStep] = useState<"login" | "register" | "verify">("login");
 
   return (
-    <main className="min-h-screen grid lg:grid-cols-2 bg-background">
+    <main className="h-screen grid lg:grid-cols-2 bg-background overflow-hidden">
       {/* HERO SECTION (Lado Esquerdo) */}
       <HeroSection />
 
       {/* CONTAINER DOS FORMULÁRIOS (Lado Direito) */}
-      <section className="flex items-center justify-center p-6 lg:p-12 relative bg-zinc-50">
+      <section className="flex items-center justify-center p-6 lg:p-12 relative bg-zinc-50 overflow-y-auto">
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.35]"
           style={{

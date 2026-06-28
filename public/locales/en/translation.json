@@ -30,29 +30,93 @@
       "submit_verify": "Confirm Code",
       "cancel": "Cancel and return to sign in",
       "loading": "Loading...",
+      "send": "Send instructions",
+      "save": "Save new password",
+      "back_to_login": "Back to sign in",
       "forgot_password": "Forgot your password?",
       "form_register": "Don't have an account? Sign up",
       "login_with_google": "Sign in with Google",
       "form_login": "Already have an account? Sign in"
     },
 
+    "google": {
+      "or": "or",
+      "not_configured": "Set VITE_GOOGLE_CLIENT_ID in the .env.local file to enable Google sign-in."
+    },
+
+    "recover": {
+      "title": "Recover password",
+      "description": "Enter your email and we will send reset instructions.",
+      "success": "If this email is registered, you will receive instructions shortly.",
+      "debug_hint": "Test link (mock — in production it would be emailed):"
+    },
+
+    "reset": {
+      "title": "Reset password",
+      "description": "Choose a new password for your account.",
+      "success": "Password reset successfully. Please sign in.",
+      "new_password_label": "New password",
+      "confirm_label": "Confirm new password"
+    },
+
     "messages": {
       "success": "Access authorized!",
       "error": "Invalid email or password!",
-      "generic_error": "An error occurred while trying to log in. Please try again later."
+      "generic_error": "An unexpected error occurred. Please try again later."
     },
 
     "validation": {
+      "name_required": "Name is required",
       "email_required": "Email is required",
       "email_invalid": "Invalid email format",
       "password_required": "Password is required",
       "password_min": "Password must be at least 6 characters",
+      "password_weak": "The password does not meet all requirements",
       "password_mismatch": "Passwords do not match",
+      "strength_weak": "Weak",
+      "strength_medium": "Medium",
+      "strength_strong": "Strong",
       "req_length": "Minimum of 8 characters",
       "req_upper": "One uppercase letter",
       "req_lower": "One lowercase letter",
       "req_number": "One number",
       "req_special": "One special character (@$!%*?&#)"
+    }
+  },
+
+  "auth": {
+    "errors": {
+      "email_taken": "This email is already registered.",
+      "invalid_credentials": "Invalid email or password.",
+      "invalid_token": "Invalid or missing token.",
+      "expired_token": "This reset link has expired.",
+      "wrong_current_password": "The current password is incorrect.",
+      "google_failed": "Could not sign in with Google. Please try again.",
+      "server_unreachable": "Could not reach the server. Make sure the backend is running."
+    }
+  },
+
+  "app": {
+    "logout": "Sign out",
+    "nav": {
+      "dashboard": "Dashboard",
+      "change_password": "Change password"
+    },
+    "dashboard": {
+      "title": "Overview",
+      "greeting": "Hi, {{name}}! Here is your finance summary.",
+      "balance": "Current balance",
+      "income": "Income",
+      "expense": "Expenses",
+      "coming_soon": "Indicators and the chart with mock data are coming in the next step."
+    },
+    "change_password": {
+      "title": "Change password",
+      "description": "Confirm your current password and set a new one.",
+      "current_label": "Current password",
+      "new_label": "New password",
+      "confirm_label": "Confirm new password",
+      "success": "Password changed successfully."
     }
   }
 }

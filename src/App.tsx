@@ -1,8 +1,42 @@
-import { LoginPage } from "./pages/login";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { AuthLayout } from "@/layouts/AuthLayout";
+import { AppLayout } from "@/layouts/AppLayout";
+import { PublicOnlyRoute } from "@/routes/PublicOnlyRoute";
+import { ProtectedRoute } from "@/routes/ProtectedRoute";
+import { paths } from "@/routes/paths";
+import { LoginPage } from "@/pages/LoginPage";
+import { RegisterPage } from "@/pages/RegisterPage";
+import { ForgotPasswordPage } from "@/pages/ForgotPasswordPage";
+import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
+import { DashboardPage } from "@/pages/DashboardPage";
+import { ChangePasswordPage } from "@/pages/ChangePasswordPage";
 import "./App.css";
 
 function App() {
-  return <LoginPage />;
+  return (
+    <Routes>
+      {/* Públicas: só para visitantes (se logado, redireciona ao dashboard). */}
+      <Route element={<PublicOnlyRoute />}>
+        <Route element={<AuthLayout />}>
+          <Route path={paths.login} element={<LoginPage />} />
+          <Route path={paths.register} element={<RegisterPage />} />
+          <Route path={paths.forgotPassword} element={<ForgotPasswordPage />} />
+          <Route path={paths.resetPassword} element={<ResetPasswordPage />} />
+        </Route>
+      </Route>
+
+      {/* Protegidas: exigem sessão. */}
+      <Route element={<ProtectedRoute />}>
+        <Route element={<AppLayout />}>
+          <Route path={paths.dashboard} element={<DashboardPage />} />
+          <Route path={paths.changePassword} element={<ChangePasswordPage />} />
+        </Route>
+      </Route>
+
+      <Route path="/" element={<Navigate to={paths.dashboard} replace />} />
+      <Route path="*" element={<Navigate to={paths.login} replace />} />
+    </Routes>
+  );
 }
 
 export default App;

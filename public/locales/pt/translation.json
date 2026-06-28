@@ -30,29 +30,93 @@
       "submit_verify": "Confirmar Código",
       "cancel": "Cancelar e voltar ao login",
       "loading": "Carregando...",
+      "send": "Enviar instruções",
+      "save": "Salvar nova senha",
+      "back_to_login": "Voltar para o login",
       "forgot_password": "Esqueceu sua senha?",
       "form_register": "Não tem uma conta? Cadastre-se",
       "login_with_google": "Entrar com Google",
       "form_login": "Já tem uma conta? Faça login"
     },
 
+    "google": {
+      "or": "ou",
+      "not_configured": "Configure VITE_GOOGLE_CLIENT_ID no arquivo .env.local para ativar o login com Google."
+    },
+
+    "recover": {
+      "title": "Recuperar senha",
+      "description": "Informe seu e-mail e enviaremos as instruções de redefinição.",
+      "success": "Se este e-mail estiver cadastrado, você receberá as instruções em breve.",
+      "debug_hint": "Link de teste (mock — em produção iria por e-mail):"
+    },
+
+    "reset": {
+      "title": "Redefinir senha",
+      "description": "Escolha uma nova senha para a sua conta.",
+      "success": "Senha redefinida com sucesso. Faça login.",
+      "new_password_label": "Nova senha",
+      "confirm_label": "Confirmar nova senha"
+    },
+
     "messages": {
       "success": "Acesso autorizado!",
       "error": "Email ou senha inválidos!",
-      "generic_error": "Ocorreu um erro ao tentar fazer login. Tente novamente mais tarde."
+      "generic_error": "Ocorreu um erro inesperado. Tente novamente mais tarde."
     },
 
     "validation": {
+      "name_required": "Nome é obrigatório",
       "email_required": "Email é obrigatório",
       "email_invalid": "Formato de email inválido",
       "password_required": "Senha é obrigatória",
       "password_min": "A senha deve ter pelo menos 6 caracteres",
+      "password_weak": "A senha não cumpre todos os requisitos",
       "password_mismatch": "As senhas não coincidem",
+      "strength_weak": "Fraca",
+      "strength_medium": "Média",
+      "strength_strong": "Forte",
       "req_length": "Mínimo de 8 caracteres",
       "req_upper": "Uma letra maiúscula",
       "req_lower": "Uma letra minúscula",
       "req_number": "Um número",
       "req_special": "Um caractere especial (@$!%*?&#)"
+    }
+  },
+
+  "auth": {
+    "errors": {
+      "email_taken": "Este e-mail já está cadastrado.",
+      "invalid_credentials": "E-mail ou senha inválidos.",
+      "invalid_token": "Token inválido ou ausente.",
+      "expired_token": "Este link de redefinição expirou.",
+      "wrong_current_password": "A senha atual está incorreta.",
+      "google_failed": "Não foi possível entrar com o Google. Tente novamente.",
+      "server_unreachable": "Não foi possível conectar ao servidor. Verifique se o backend está rodando."
+    }
+  },
+
+  "app": {
+    "logout": "Sair",
+    "nav": {
+      "dashboard": "Dashboard",
+      "change_password": "Alterar senha"
+    },
+    "dashboard": {
+      "title": "Visão geral",
+      "greeting": "Olá, {{name}}! Aqui está o resumo das suas finanças.",
+      "balance": "Saldo atual",
+      "income": "Receitas",
+      "expense": "Despesas",
+      "coming_soon": "Os indicadores e o gráfico com dados mock chegam no próximo passo."
+    },
+    "change_password": {
+      "title": "Alterar senha",
+      "description": "Confirme sua senha atual e defina uma nova.",
+      "current_label": "Senha atual",
+      "new_label": "Nova senha",
+      "confirm_label": "Confirmar nova senha",
+      "success": "Senha alterada com sucesso."
     }
   }
 }

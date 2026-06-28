@@ -14,7 +14,10 @@ export default defineConfig({
     },
   },
   server: {
+    // Respeita a porta atribuída pelo ambiente; padrão 5173 no uso normal.
+    port: process.env.PORT ? Number(process.env.PORT) : 5173,
     proxy: {
+      // Encaminha as chamadas de autenticação para o backend Spring.
       '/auth': 'http://localhost:8080',
     },
   },

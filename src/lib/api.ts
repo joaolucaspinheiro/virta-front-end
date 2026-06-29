@@ -30,3 +30,12 @@ export async function apiRegister(nome: string, email: string, senha: string): P
   });
   await handleResponse<unknown>(res);
 }
+
+export async function apiGoogleLogin(credential: string): Promise<LoginResponse> {
+  const res = await fetch("/auth/google", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ credential }),
+  });
+  return handleResponse<LoginResponse>(res);
+}

@@ -1,15 +1,14 @@
-import { jwtDecode } from "jwt-decode";
-import type { AuthSession, User } from "@/types/auth";
-import { mockDb, type StoredUser } from "@/services/mockDb";
-import { apiLogin, apiRegister } from "@/lib/api";
+import type { AuthSession } from "@/types/auth";
+import { mockDb } from "@/services/mockDb";
+import { apiGoogleLogin, apiLogin, apiRegister } from "@/lib/api";
 
 /**
  * Camada de serviço de autenticação.
  *
- * login/register: chamam o backend Spring de verdade (via @/lib/api + proxy).
- * google/recuperação/troca de senha: ainda mock (esses endpoints não existem
- * no backend nesta etapa). Cada função lança AuthError com uma chave i18n
- * (ou a mensagem do backend) para a UI exibir o texto adequado.
+ * login/register/google: chamam o backend Spring de verdade (via @/lib/api + proxy).
+ * recuperação/troca de senha: ainda mock (endpoints inexistentes nesta etapa).
+ * Cada função lança AuthError com uma chave i18n (ou a mensagem do backend)
+ * para a UI exibir o texto adequado.
  */
 
 const DEFAULT_DELAY = 800;
@@ -56,21 +55,6 @@ function createId(): string {
   return crypto.randomUUID();
 }
 
-/** Token fake usado apenas pelos fluxos ainda mock (Google/recuperação). */
-function fakeToken(user: User): string {
-  return btoa(`${user.id}:${user.email}:${Date.now()}`);
-}
-
-function toPublicUser(u: StoredUser): User {
-  return {
-    id: u.id,
-    name: u.name,
-    email: u.email,
-    avatarUrl: u.avatarUrl,
-    provider: u.provider,
-  };
-}
-
 export async function login(input: LoginInput): Promise<AuthSession> {
   try {
     const data = await apiLogin(input.email, input.password);
@@ -98,34 +82,25 @@ export async function register(input: RegisterInput): Promise<AuthSession> {
   }
 }
 
-interface GoogleIdTokenPayload {
-  email?: string;
-  name?: string;
-  picture?: string;
-}
-
 /**
- * Login com Google (mock). Decodifica o ID token do Google Identity Services
- * para identificar o usuário. Na Parte 2, o backend validará a assinatura.
+ * Login com Google. Envia o ID token (credential) do Google Identity Services
+ * ao backend, que valida a assinatura e devolve o nosso JWT.
  */
 export async function loginWithGoogle(credential: string): Promise<AuthSession> {
-  await delay(400);
-  const payload = jwtDecode<GoogleIdTokenPayload>(credential);
-  if (!payload.email) {
-    throw new AuthError("auth.errors.google_failed");
+  try {
+    const data = await apiGoogleLogin(credential);
+    return {
+      token: data.token,
+      user: {
+        id: String(data.id),
+        name: data.nome,
+        email: data.email,
+        provider: "google",
+      },
+    };
+  } catch (err) {
+    throw toAuthError(err);
   }
-  let user = mockDb.findByEmail(payload.email);
-  if (!user) {
-    user = mockDb.upsert({
-      id: createId(),
-      name: payload.name ?? payload.email,
-      email: payload.email,
-      avatarUrl: payload.picture,
-      provider: "google",
-    });
-  }
-  const pub = toPublicUser(user);
-  return { token: fakeToken(pub), user: pub };
 }
 
 /**

@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { passwordRules, passwordScore } from "@/lib/passwordRules";
 
-/** Indicador reativo de força + checklist de requisitos da senha. */
+/** Reactive strength indicator + password requirements checklist. */
 export function PasswordChecklist({ password }: { password: string }) {
   const { t } = useTranslation();
   if (!password) return null;

@@ -1,11 +1,11 @@
-/** Rotas da aplicação, centralizadas para evitar strings soltas. */
+/** Application routes, centralized to avoid scattered string literals. */
 export const paths = {
   login: "/login",
   register: "/cadastro",
   forgotPassword: "/recuperar-senha",
-  /** Padrão usado na definição da rota (com :token). */
+  /** Pattern used in the route definition (with :token). */
   resetPassword: "/redefinir-senha/:token",
-  /** Helper para montar a URL concreta com um token. */
+  /** Helper to build the concrete URL with a token. */
   resetPasswordTo: (token: string) => `/redefinir-senha/${token}`,
   app: "/app",
   dashboard: "/app/dashboard",

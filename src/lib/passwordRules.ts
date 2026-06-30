@@ -1,6 +1,6 @@
-/** Regras de força de senha, compartilhadas entre cadastro, redefinição e troca. */
+/** Password strength rules, shared across sign-up, reset and change password. */
 export interface PasswordRule {
-  /** Chave i18n da descrição da regra. */
+  /** i18n key for the rule description. */
   key: string;
   test: (password: string) => boolean;
 }
@@ -13,12 +13,12 @@ export const passwordRules: PasswordRule[] = [
   { key: "login.validation.req_special", test: (p) => /[@$!%*?&#]/.test(p) },
 ];
 
-/** A senha cumpre todas as regras? */
+/** Does the password satisfy every rule? */
 export function isStrongPassword(password: string): boolean {
   return passwordRules.every((rule) => rule.test(password));
 }
 
-/** Quantas regras a senha cumpre (0..passwordRules.length). */
+/** How many rules the password satisfies (0..passwordRules.length). */
 export function passwordScore(password: string): number {
   return passwordRules.filter((rule) => rule.test(password)).length;
 }

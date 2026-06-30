@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { HeroSection } from "@/components/HeroSection";
 
-/** Layout das telas públicas: hero à esquerda, formulário (Outlet) à direita. */
+/** Public screens layout: hero on the left, form (Outlet) on the right. */
 export function AuthLayout() {
   return (
     <main className="min-h-screen grid lg:grid-cols-2 bg-background">

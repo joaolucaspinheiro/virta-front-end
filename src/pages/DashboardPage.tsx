@@ -3,9 +3,8 @@ import { ArrowDownRight, ArrowUpRight, Wallet } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 /**
- * Placeholder do dashboard. A estrutura (cards + área de conteúdo) já está
- * pronta; os indicadores e o gráfico (Recharts) com dados mock entram no
- * próximo passo.
+ * Dashboard placeholder. The structure (cards + content area) is ready; the
+ * indicators and the chart (Recharts) with mock data come in the next step.
  */
 export function DashboardPage() {
   const { t } = useTranslation();

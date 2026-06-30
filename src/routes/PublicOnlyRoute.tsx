@@ -3,7 +3,7 @@ import { useAuth } from "@/context/AuthContext";
 import { paths } from "@/routes/paths";
 import { FullScreenLoader } from "@/components/FullScreenLoader";
 
-/** Rotas só para visitantes (login, cadastro...). Se já logado, vai ao dashboard. */
+/** Visitor-only routes (login, sign-up...). If already logged in, go to dashboard. */
 export function PublicOnlyRoute() {
   const { isAuthenticated, isLoading } = useAuth();
 

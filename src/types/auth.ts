@@ -1,7 +1,7 @@
-/** Origem da conta: criada com senha ou via Google. */
+/** Account origin: created with a password or via Google. */
 export type AuthProvider = "password" | "google";
 
-/** Representação pública do usuário (sem dados sensíveis). */
+/** Public representation of the user (no sensitive data). */
 export interface User {
   id: string;
   name: string;
@@ -10,7 +10,7 @@ export interface User {
   provider: AuthProvider;
 }
 
-/** Sessão autenticada persistida no localStorage. */
+/** Authenticated session persisted in localStorage. */
 export interface AuthSession {
   token: string;
   user: User;

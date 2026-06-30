@@ -6,7 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { paths } from "@/routes/paths";
 import { WaveMark } from "@/components/WaveMark";
 
-/** Shell da área autenticada: navegação lateral + topo + conteúdo (Outlet). */
+/** Authenticated area shell: sidebar nav + top bar + content (Outlet). */
 export function AppLayout() {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
@@ -44,7 +44,7 @@ export function AppLayout() {
         <UserCard initial={initial} name={user?.name} email={user?.email} avatarUrl={user?.avatarUrl} />
       </aside>
 
-      {/* Conteúdo */}
+      {/* Content */}
       <div className="flex flex-col">
         <header className="flex h-16 items-center justify-between border-b border-zinc-200 bg-white px-6">
           <div className="flex items-center gap-2 md:hidden">

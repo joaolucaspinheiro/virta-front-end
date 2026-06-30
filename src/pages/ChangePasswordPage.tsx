@@ -47,7 +47,7 @@ export function ChangePasswordPage() {
       setFieldErrors({});
     } catch (err) {
       if (err instanceof AuthError) {
-        // Erro específico no campo da senha atual quando ela está incorreta.
+        // Field-specific error on the current password when it is incorrect.
         if (err.messageKey === "auth.errors.wrong_current_password") {
           setFieldErrors((prev) => ({ ...prev, current: t(err.messageKey) }));
         } else {

@@ -15,7 +15,7 @@ import "./App.css";
 function App() {
   return (
     <Routes>
-      {/* Públicas: só para visitantes (se logado, redireciona ao dashboard). */}
+      {/* Public: visitors only (if logged in, redirect to the dashboard). */}
       <Route element={<PublicOnlyRoute />}>
         <Route element={<AuthLayout />}>
           <Route path={paths.login} element={<LoginPage />} />
@@ -25,7 +25,7 @@ function App() {
         </Route>
       </Route>
 
-      {/* Protegidas: exigem sessão. */}
+      {/* Protected: require a session. */}
       <Route element={<ProtectedRoute />}>
         <Route element={<AppLayout />}>
           <Route path={paths.dashboard} element={<DashboardPage />} />

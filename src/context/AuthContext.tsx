@@ -13,7 +13,7 @@ interface AuthContextValue {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
-  /** Mantido por compatibilidade; a sessão é lida de forma síncrona. */
+  /** Kept for compatibility; the session is read synchronously. */
   isLoading: boolean;
   setSession: (session: AuthSession) => void;
   logout: () => void;
@@ -31,7 +31,7 @@ function readSession(): AuthSession | null {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  // Lê a sessão persistida já no init (síncrono) — sem effect, sem cascata de render.
+  // Read the persisted session at init (synchronous) — no effect, no render cascade.
   const [session, setSessionState] = useState<AuthSession | null>(readSession);
 
   const value = useMemo<AuthContextValue>(() => {
@@ -53,7 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession,
       logout,
     };
-  }, [session]);
+  }, [session, session?.token]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
@@ -62,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth(): AuthContextValue {
   const ctx = useContext(AuthContext);
   if (!ctx) {
-    throw new Error("useAuth deve ser usado dentro de <AuthProvider>.");
+    throw new Error("useAuth must be used within an <AuthProvider>.");
   }
   return ctx;
 }

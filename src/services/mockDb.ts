@@ -1,21 +1,16 @@
 import type { User } from "@/types/auth";
 
 /**
- * "Banco" fake guardado no localStorage para a Parte 1 (sem backend real).
- * Na Parte 2 estas funções serão substituídas por chamadas HTTP ao Spring.
+ * Fake "database" kept in localStorage, used only by the change-password mock
+ * until that backend endpoint exists. Real auth (login/register/google/recovery)
+ * already goes through the Spring API.
  */
 
 const USERS_KEY = "virta.mock.users";
-const TOKENS_KEY = "virta.mock.resetTokens";
 
-/** Usuário como guardado no mock — inclui a senha (apenas para simulação). */
+/** User as stored in the mock — includes the password (simulation only). */
 export interface StoredUser extends User {
   password?: string;
-}
-
-interface ResetToken {
-  email: string;
-  expiresAt: number;
 }
 
 function read<T>(key: string, fallback: T): T {
@@ -32,12 +27,6 @@ function write<T>(key: string, value: T): void {
 }
 
 export const mockDb = {
-  findByEmail(email: string): StoredUser | undefined {
-    return read<StoredUser[]>(USERS_KEY, []).find(
-      (u) => u.email.toLowerCase() === email.toLowerCase(),
-    );
-  },
-
   findById(id: string): StoredUser | undefined {
     return read<StoredUser[]>(USERS_KEY, []).find((u) => u.id === id);
   },
@@ -49,21 +38,5 @@ export const mockDb = {
     else users.push(user);
     write(USERS_KEY, users);
     return user;
-  },
-
-  saveToken(token: string, data: ResetToken): void {
-    const tokens = read<Record<string, ResetToken>>(TOKENS_KEY, {});
-    tokens[token] = data;
-    write(TOKENS_KEY, tokens);
-  },
-
-  consumeToken(token: string): ResetToken | undefined {
-    const tokens = read<Record<string, ResetToken>>(TOKENS_KEY, {});
-    const data = tokens[token];
-    if (data) {
-      delete tokens[token];
-      write(TOKENS_KEY, tokens);
-    }
-    return data;
   },
 };

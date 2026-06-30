@@ -11,7 +11,7 @@ type GoogleButtonProps = {
 export function GoogleButton({ onCredential, onError }: GoogleButtonProps) {
   const { t } = useTranslation();
 
-  // Sem Client ID configurado, mostramos um placeholder desativado e explicativo.
+  // With no Client ID configured, show a disabled, explanatory placeholder.
   if (!isGoogleEnabled) {
     return (
       <button

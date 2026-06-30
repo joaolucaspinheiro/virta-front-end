@@ -13,8 +13,8 @@ import { env } from "@/config/env";
 
 function Root() {
   const { i18n } = useTranslation();
-  // O texto do botão do Google segue o idioma do app. A `key` força recarregar
-  // o script do GIS quando o usuário troca PT/EN.
+  // The Google button text follows the app language. The `key` forces a reload
+  // of the GIS script when the user switches between PT/EN.
   const locale = i18n.language.startsWith("en") ? "en" : "pt-BR";
 
   return (

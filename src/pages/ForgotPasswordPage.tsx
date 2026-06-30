@@ -50,7 +50,7 @@ export function ForgotPasswordPage() {
             <h2 className="text-2xl font-bold tracking-tight text-zinc-900">
               {t("login.recover.title")}
             </h2>
-            {/* Mensagem neutra: nunca revela se o e-mail existe. */}
+            {/* Neutral message: never reveals whether the e-mail exists. */}
             <p className="text-sm text-zinc-600">{t("login.recover.success")}</p>
           </div>
 

@@ -3,7 +3,7 @@ import { useAuth } from "@/context/AuthContext";
 import { paths } from "@/routes/paths";
 import { FullScreenLoader } from "@/components/FullScreenLoader";
 
-/** Bloqueia rotas autenticadas; redireciona para /login guardando a origem. */
+/** Guards authenticated routes; redirects to /login keeping the origin. */
 export function ProtectedRoute() {
   const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();

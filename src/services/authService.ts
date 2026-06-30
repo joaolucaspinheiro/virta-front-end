@@ -1,21 +1,27 @@
 import type { AuthSession } from "@/types/auth";
 import { mockDb } from "@/services/mockDb";
-import { apiGoogleLogin, apiLogin, apiRegister } from "@/lib/api";
+import {
+  apiForgotPassword,
+  apiGoogleLogin,
+  apiLogin,
+  apiRegister,
+  apiResetPassword,
+} from "@/lib/api";
 
 /**
- * Camada de serviço de autenticação.
+ * Authentication service layer.
  *
- * login/register/google: chamam o backend Spring de verdade (via @/lib/api + proxy).
- * recuperação/troca de senha: ainda mock (endpoints inexistentes nesta etapa).
- * Cada função lança AuthError com uma chave i18n (ou a mensagem do backend)
- * para a UI exibir o texto adequado.
+ * login/register/google/forgot/reset: call the real Spring backend (via @/lib/api + proxy).
+ * change password: still mocked (the endpoint does not exist yet at this stage).
+ * Each function throws an AuthError carrying an i18n key (or the backend message)
+ * so the UI can show the proper text.
  */
 
 const DEFAULT_DELAY = 800;
 const delay = (ms = DEFAULT_DELAY) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-/** Erro de negócio da autenticação. `messageKey` é uma chave do i18n. */
+/** Authentication business error. `messageKey` is an i18n key. */
 export class AuthError extends Error {
   readonly messageKey: string;
   constructor(messageKey: string) {
@@ -26,9 +32,9 @@ export class AuthError extends Error {
 }
 
 /**
- * Converte erros do fetch em AuthError. Falha de rede vira chave traduzível;
- * erros do backend (com mensagem) passam a mensagem adiante (o i18n devolve
- * o texto cru quando não é uma chave conhecida).
+ * Converts fetch errors into AuthError. A network failure becomes a translatable
+ * key; backend errors (with a message) pass the message through (i18n returns the
+ * raw text when it is not a known key).
  */
 function toAuthError(err: unknown): AuthError {
   if (err instanceof TypeError) {
@@ -51,10 +57,6 @@ export interface LoginInput {
   password: string;
 }
 
-function createId(): string {
-  return crypto.randomUUID();
-}
-
 export async function login(input: LoginInput): Promise<AuthSession> {
   try {
     const data = await apiLogin(input.email, input.password);
@@ -62,7 +64,7 @@ export async function login(input: LoginInput): Promise<AuthSession> {
       token: data.token,
       user: {
         id: String(data.id),
-        name: data.nome,
+        name: data.name,
         email: data.email,
         provider: "password",
       },
@@ -75,7 +77,7 @@ export async function login(input: LoginInput): Promise<AuthSession> {
 export async function register(input: RegisterInput): Promise<AuthSession> {
   try {
     await apiRegister(input.name.trim(), input.email.trim(), input.password);
-    // O backend de cadastro não devolve token; logamos em seguida.
+    // The register endpoint does not return a token; log in right after.
     return await login({ email: input.email, password: input.password });
   } catch (err) {
     throw toAuthError(err);
@@ -83,8 +85,8 @@ export async function register(input: RegisterInput): Promise<AuthSession> {
 }
 
 /**
- * Login com Google. Envia o ID token (credential) do Google Identity Services
- * ao backend, que valida a assinatura e devolve o nosso JWT.
+ * Google login. Sends the Google Identity Services ID token (credential) to the
+ * backend, which validates the signature and returns our own JWT.
  */
 export async function loginWithGoogle(credential: string): Promise<AuthSession> {
   try {
@@ -93,7 +95,7 @@ export async function loginWithGoogle(credential: string): Promise<AuthSession> 
       token: data.token,
       user: {
         id: String(data.id),
-        name: data.nome,
+        name: data.name,
         email: data.email,
         provider: "google",
       },
@@ -104,49 +106,36 @@ export async function loginWithGoogle(credential: string): Promise<AuthSession> 
 }
 
 /**
- * Etapa 1 da recuperação (mock). Mensagem neutra na UI; como ainda não há
- * backend de recuperação, sempre geramos um token de teste para validar o fluxo.
+ * Recovery step 1. The UI message stays neutral; the backend returns a debugToken
+ * (test helper) only when the e-mail exists.
  */
 export async function forgotPassword(
   email: string,
 ): Promise<{ debugToken?: string }> {
-  await delay();
-  const token = createId();
-  mockDb.saveToken(token, {
-    email,
-    expiresAt: Date.now() + 60 * 60 * 1000,
-  });
-  return { debugToken: token };
+  try {
+    const data = await apiForgotPassword(email);
+    return { debugToken: data.debugToken ?? undefined };
+  } catch (err) {
+    throw toAuthError(err);
+  }
 }
 
-/**
- * Etapa 2 da recuperação (mock). Qualquer token não-vazio é aceito.
- * Se for um token conhecido, validamos a expiração e atualizamos o mock.
- */
+/** Recovery step 2. Sends the token and the new password to the backend. */
 export async function resetPassword(
   token: string,
   newPassword: string,
 ): Promise<void> {
-  await delay();
-  if (!token) throw new AuthError("auth.errors.invalid_token");
-  const data = mockDb.consumeToken(token);
-  if (data) {
-    if (data.expiresAt < Date.now()) {
-      throw new AuthError("auth.errors.expired_token");
-    }
-    const user = mockDb.findByEmail(data.email);
-    if (user) {
-      user.password = newPassword;
-      user.provider = "password";
-      mockDb.upsert(user);
-    }
+  try {
+    await apiResetPassword(token, newPassword);
+  } catch (err) {
+    throw toAuthError(err);
   }
 }
 
 /**
- * Troca de senha (mock). O backend ainda não expõe esse endpoint.
- * Para usuários vindos do backend real (não presentes no mock), apenas
- * simulamos o sucesso, já que não há como verificar a senha atual aqui.
+ * Change password (mock). The backend does not expose this endpoint yet.
+ * For users coming from the real backend (absent from the mock store), we just
+ * simulate success, since there is no way to verify the current password here.
  */
 export async function changePassword(
   userId: string,

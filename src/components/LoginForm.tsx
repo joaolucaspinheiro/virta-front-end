@@ -26,7 +26,7 @@ export function LoginForm() {
     password?: string;
   }>({});
 
-  // Volta para a rota que o usuário tentou acessar antes de ser barrado.
+  // Go back to the route the user tried to reach before being blocked.
   const redirectTo =
     (location.state as { from?: { pathname?: string } } | null)?.from
       ?.pathname ?? paths.dashboard;

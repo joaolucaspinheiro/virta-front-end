@@ -1,6 +1,6 @@
 import type { AuthSession } from "@/types/auth";
-import { mockDb } from "@/services/mockDb";
 import {
+  apiChangePassword,
   apiForgotPassword,
   apiGoogleLogin,
   apiLogin,
@@ -9,17 +9,10 @@ import {
 } from "@/lib/api";
 
 /**
- * Authentication service layer.
- *
- * login/register/google/forgot/reset: call the real Spring backend (via @/lib/api + proxy).
- * change password: still mocked (the endpoint does not exist yet at this stage).
- * Each function throws an AuthError carrying an i18n key (or the backend message)
- * so the UI can show the proper text.
+ * Authentication service layer. Every function calls the real Spring backend
+ * (via @/lib/api + the Vite proxy) and throws an AuthError carrying an i18n key
+ * (or the backend message) so the UI can show the proper text.
  */
-
-const DEFAULT_DELAY = 800;
-const delay = (ms = DEFAULT_DELAY) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
 
 /** Authentication business error. `messageKey` is an i18n key. */
 export class AuthError extends Error {
@@ -133,23 +126,17 @@ export async function resetPassword(
 }
 
 /**
- * Change password (mock). The backend does not expose this endpoint yet.
- * For users coming from the real backend (absent from the mock store), we just
- * simulate success, since there is no way to verify the current password here.
+ * Change the authenticated user's password. Requires the access token so the
+ * backend can identify the user; it verifies the current password (422 if wrong).
  */
 export async function changePassword(
-  userId: string,
+  accessToken: string,
   currentPassword: string,
   newPassword: string,
 ): Promise<void> {
-  await delay();
-  const user = mockDb.findById(userId);
-  if (user) {
-    if (user.provider === "password" && user.password !== currentPassword) {
-      throw new AuthError("auth.errors.wrong_current_password");
-    }
-    user.password = newPassword;
-    user.provider = "password";
-    mockDb.upsert(user);
+  try {
+    await apiChangePassword(accessToken, currentPassword, newPassword);
+  } catch (err) {
+    throw toAuthError(err);
   }
 }

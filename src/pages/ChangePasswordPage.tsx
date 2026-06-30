@@ -9,7 +9,7 @@ import { PasswordChecklist } from "@/components/auth/PasswordChecklist";
 
 export function ChangePasswordPage() {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { token } = useAuth();
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -36,10 +36,10 @@ export function ChangePasswordPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!user || !validate()) return;
+    if (!token || !validate()) return;
     setLoading(true);
     try {
-      await changePassword(user.id, currentPassword, newPassword);
+      await changePassword(token, currentPassword, newPassword);
       toast.success(t("app.change_password.success"));
       setCurrentPassword("");
       setNewPassword("");
@@ -47,11 +47,11 @@ export function ChangePasswordPage() {
       setFieldErrors({});
     } catch (err) {
       if (err instanceof AuthError) {
-        // Field-specific error on the current password when it is incorrect.
-        if (err.messageKey === "auth.errors.wrong_current_password") {
-          setFieldErrors((prev) => ({ ...prev, current: t(err.messageKey) }));
-        } else {
+        if (err.messageKey === "auth.errors.server_unreachable") {
           toast.error(t(err.messageKey));
+        } else {
+          // Backend business error (e.g. wrong current password) shown on the field.
+          setFieldErrors((prev) => ({ ...prev, current: t(err.messageKey) }));
         }
       } else {
         toast.error(t("login.messages.generic_error"));

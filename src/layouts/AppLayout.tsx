@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { KeyRound, LayoutDashboard, LogOut, Wallet } from "lucide-react";
+import { LayoutDashboard, LogOut, Wallet } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { paths } from "@/routes/paths";
 import { WaveMark } from "@/components/WaveMark";
@@ -40,11 +40,6 @@ export function AppLayout() {
             icon={<Wallet className="h-4 w-4" />}
             label={t("app.nav.wallets")}
           />
-          <SidebarLink
-            to={paths.changePassword}
-            icon={<KeyRound className="h-4 w-4" />}
-            label={t("app.nav.change_password")}
-          />
         </nav>
 
         <UserCard initial={initial} name={user?.name} email={user?.email} avatarUrl={user?.avatarUrl} />
@@ -62,13 +57,17 @@ export function AppLayout() {
             <span className="hidden text-sm text-zinc-600 sm:inline">
               {user?.name}
             </span>
-            <div className="grid h-9 w-9 place-items-center overflow-hidden rounded-full bg-brand-500 text-sm font-semibold text-white">
+            <Link
+              to={paths.profile}
+              title={t("app.nav.profile")}
+              className="grid h-9 w-9 place-items-center overflow-hidden rounded-full bg-brand-500 text-sm font-semibold text-white ring-offset-2 transition-all hover:ring-2 hover:ring-brand-500"
+            >
               {user?.avatarUrl ? (
                 <img src={user.avatarUrl} alt={user.name} className="h-full w-full object-cover" />
               ) : (
                 initial
               )}
-            </div>
+            </Link>
             <button
               type="button"
               onClick={handleLogout}
@@ -126,7 +125,10 @@ function UserCard({
   avatarUrl?: string;
 }) {
   return (
-    <div className="mt-4 flex items-center gap-3 rounded-xl border border-zinc-200 bg-zinc-50 p-3">
+    <Link
+      to={paths.profile}
+      className="mt-4 flex items-center gap-3 rounded-xl border border-zinc-200 bg-zinc-50 p-3 transition-colors hover:bg-zinc-100"
+    >
       <div className="grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-full bg-brand-500 text-sm font-semibold text-white">
         {avatarUrl ? (
           <img src={avatarUrl} alt={name} className="h-full w-full object-cover" />
@@ -138,6 +140,6 @@ function UserCard({
         <p className="truncate text-sm font-medium text-zinc-900">{name}</p>
         <p className="truncate text-xs text-zinc-500">{email}</p>
       </div>
-    </div>
+    </Link>
   );
 }

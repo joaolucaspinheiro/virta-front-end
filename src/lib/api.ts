@@ -62,19 +62,3 @@ export async function apiResetPassword(token: string, newPassword: string): Prom
   });
   await handleResponse<unknown>(res);
 }
-
-export async function apiChangePassword(
-  accessToken: string,
-  currentPassword: string,
-  newPassword: string,
-): Promise<void> {
-  const res = await fetch("/api/v1/users/me/password", {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({ currentPassword, newPassword }),
-  });
-  await handleResponse<unknown>(res);
-}

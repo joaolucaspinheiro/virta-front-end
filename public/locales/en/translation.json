@@ -101,7 +101,19 @@
     "nav": {
       "dashboard": "Dashboard",
       "wallets": "Wallets",
+      "profile": "Profile",
       "change_password": "Change password"
+    },
+    "profile": {
+      "title": "Profile",
+      "subtitle": "Manage your details and password.",
+      "section_info": "Account details",
+      "section_security": "Security",
+      "name_label": "Name",
+      "email_label": "Email",
+      "save": "Save changes",
+      "updated": "Profile updated.",
+      "name_min": "Name must be at least 2 characters."
     },
     "dashboard": {
       "title": "Overview",

@@ -14,5 +14,6 @@ export const paths = {
   walletDetail: "/app/carteiras/:id",
   /** Helper to build the concrete URL with a wallet id. */
   walletDetailTo: (id: number | string) => `/app/carteiras/${id}`,
+  profile: "/app/perfil",
   changePassword: "/app/perfil/senha",
 } as const;

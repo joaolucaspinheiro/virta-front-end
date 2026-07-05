@@ -101,7 +101,19 @@
     "nav": {
       "dashboard": "Dashboard",
       "wallets": "Carteiras",
+      "profile": "Perfil",
       "change_password": "Alterar senha"
+    },
+    "profile": {
+      "title": "Perfil",
+      "subtitle": "Gerencie seus dados e sua senha.",
+      "section_info": "Dados da conta",
+      "section_security": "Segurança",
+      "name_label": "Nome",
+      "email_label": "E-mail",
+      "save": "Salvar alterações",
+      "updated": "Perfil atualizado.",
+      "name_min": "O nome deve ter pelo menos 2 caracteres."
     },
     "dashboard": {
       "title": "Visão geral",

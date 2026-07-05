@@ -1,6 +1,5 @@
 import type { AuthSession } from "@/types/auth";
 import {
-  apiChangePassword,
   apiForgotPassword,
   apiGoogleLogin,
   apiLogin,
@@ -120,22 +119,6 @@ export async function resetPassword(
 ): Promise<void> {
   try {
     await apiResetPassword(token, newPassword);
-  } catch (err) {
-    throw toAuthError(err);
-  }
-}
-
-/**
- * Change the authenticated user's password. Requires the access token so the
- * backend can identify the user; it verifies the current password (422 if wrong).
- */
-export async function changePassword(
-  accessToken: string,
-  currentPassword: string,
-  newPassword: string,
-): Promise<void> {
-  try {
-    await apiChangePassword(accessToken, currentPassword, newPassword);
   } catch (err) {
     throw toAuthError(err);
   }

@@ -11,6 +11,7 @@ import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { DashboardPage } from "@/pages/DashboardPage";
 import { WalletsPage } from "@/pages/WalletsPage";
 import { WalletDetailPage } from "@/pages/WalletDetailPage";
+import { ProfilePage } from "@/pages/ProfilePage";
 import { ChangePasswordPage } from "@/pages/ChangePasswordPage";
 import "./App.css";
 
@@ -33,6 +34,7 @@ function App() {
           <Route path={paths.dashboard} element={<DashboardPage />} />
           <Route path={paths.wallets} element={<WalletsPage />} />
           <Route path={paths.walletDetail} element={<WalletDetailPage />} />
+          <Route path={paths.profile} element={<ProfilePage />} />
           <Route path={paths.changePassword} element={<ChangePasswordPage />} />
         </Route>
       </Route>

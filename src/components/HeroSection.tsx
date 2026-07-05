@@ -1,10 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { WaveMark } from "@/components/WaveMark";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export function HeroSection() {
-  const { t, i18n } = useTranslation();
-
-  const changeLanguage = (lng: string) => i18n.changeLanguage(lng);
+  const { t } = useTranslation();
 
   return (
     <section
@@ -54,22 +53,7 @@ export function HeroSection() {
           <span className="text-lg font-semibold tracking-tight">Virta</span>
         </div>
 
-        <div className="inline-flex rounded-full bg-white/10 ring-1 ring-white/15 p-1 backdrop-blur">
-          {(["pt", "en"] as const).map((l) => (
-            <button
-              key={l}
-              type="button"
-              onClick={() => changeLanguage(l)}
-              className={`px-3 py-1 text-xs font-semibold rounded-full transition-all cursor-pointer ${
-                i18n.language === l
-                  ? "bg-white text-brand-500 shadow"
-                  : "text-white/80 hover:text-white"
-              }`}
-            >
-              {l.toUpperCase()}
-            </button>
-          ))}
-        </div>
+        <LanguageSwitcher variant="dark" />
       </header>
 
       {/* Headline */}

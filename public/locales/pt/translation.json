@@ -133,6 +133,7 @@
       "confirm_delete": "Excluir esta carteira? Isso remove todos os dados dela.",
       "confirm_remove_member": "Remover este membro da carteira?",
       "member_added": "Membro adicionado.",
+      "member_invited": "Convite enviado! A pessoa precisa definir a senha pelo link.",
       "member_updated": "Papel do membro atualizado.",
       "member_removed": "Membro removido.",
       "roles": {

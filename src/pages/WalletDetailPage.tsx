@@ -102,11 +102,17 @@ export function WalletDetailPage() {
     if (!memberEmail.trim()) return;
     setAddingMember(true);
     try {
-      await addMember(walletId, {
+      const res = await addMember(walletId, {
         email: memberEmail.trim(),
         role: memberRole,
       });
-      toast.success(t("app.wallets.member_added"));
+      if (res.created && res.debugToken) {
+        // New account was invited: surface the reset link (simulated e-mail).
+        const link = window.location.origin + paths.resetPasswordTo(res.debugToken);
+        toast.success(t("app.wallets.member_invited"), { description: link });
+      } else {
+        toast.success(t("app.wallets.member_added"));
+      }
       setMemberEmail("");
       setMemberRole("VIEWER");
       await load();

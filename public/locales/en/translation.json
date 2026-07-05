@@ -133,6 +133,7 @@
       "confirm_delete": "Delete this wallet? This removes all of its data.",
       "confirm_remove_member": "Remove this member from the wallet?",
       "member_added": "Member added.",
+      "member_invited": "Invite sent! They need to set a password via the link.",
       "member_updated": "Member role updated.",
       "member_removed": "Member removed.",
       "roles": {

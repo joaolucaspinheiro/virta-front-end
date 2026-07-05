@@ -1,5 +1,10 @@
 import { apiFetch } from "@/lib/http";
-import type { Wallet, WalletMember, WalletRole } from "@/types/wallet";
+import type {
+  AddMemberResponse,
+  Wallet,
+  WalletMember,
+  WalletRole,
+} from "@/types/wallet";
 
 const BASE = "/api/v1/wallets";
 
@@ -41,8 +46,8 @@ export function listMembers(walletId: number): Promise<WalletMember[]> {
 export function addMember(
   walletId: number,
   input: { email: string; role: WalletRole },
-): Promise<WalletMember> {
-  return apiFetch<WalletMember>(`${BASE}/${walletId}/members`, {
+): Promise<AddMemberResponse> {
+  return apiFetch<AddMemberResponse>(`${BASE}/${walletId}/members`, {
     method: "POST",
     body: JSON.stringify(input),
   });

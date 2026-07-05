@@ -5,6 +5,7 @@ import { KeyRound, LayoutDashboard, LogOut, Wallet } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { paths } from "@/routes/paths";
 import { WaveMark } from "@/components/WaveMark";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 /** Authenticated area shell: sidebar nav + top bar + content (Outlet). */
 export function AppLayout() {
@@ -57,6 +58,7 @@ export function AppLayout() {
             <span className="font-bold text-zinc-900">Virta</span>
           </div>
           <div className="flex flex-1 items-center justify-end gap-3">
+            <LanguageSwitcher />
             <span className="hidden text-sm text-zinc-600 sm:inline">
               {user?.name}
             </span>

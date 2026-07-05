@@ -6,8 +6,7 @@ import {
   type ReactNode,
 } from "react";
 import type { AuthSession, User } from "@/types/auth";
-
-const STORAGE_KEY = "virta.session";
+import { SESSION_KEY, getStoredSession } from "@/lib/session";
 
 interface AuthContextValue {
   user: User | null;
@@ -21,27 +20,18 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-function readSession(): AuthSession | null {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as AuthSession) : null;
-  } catch {
-    return null;
-  }
-}
-
 export function AuthProvider({ children }: { children: ReactNode }) {
   // Read the persisted session at init (synchronous) — no effect, no render cascade.
-  const [session, setSessionState] = useState<AuthSession | null>(readSession);
+  const [session, setSessionState] = useState<AuthSession | null>(getStoredSession);
 
   const value = useMemo<AuthContextValue>(() => {
     const setSession = (next: AuthSession) => {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      localStorage.setItem(SESSION_KEY, JSON.stringify(next));
       setSessionState(next);
     };
 
     const logout = () => {
-      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(SESSION_KEY);
       setSessionState(null);
     };
 

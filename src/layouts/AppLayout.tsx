@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { KeyRound, LayoutDashboard, LogOut } from "lucide-react";
+import { KeyRound, LayoutDashboard, LogOut, Wallet } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { paths } from "@/routes/paths";
 import { WaveMark } from "@/components/WaveMark";
@@ -33,6 +33,11 @@ export function AppLayout() {
             to={paths.dashboard}
             icon={<LayoutDashboard className="h-4 w-4" />}
             label={t("app.nav.dashboard")}
+          />
+          <SidebarLink
+            to={paths.wallets}
+            icon={<Wallet className="h-4 w-4" />}
+            label={t("app.nav.wallets")}
           />
           <SidebarLink
             to={paths.changePassword}

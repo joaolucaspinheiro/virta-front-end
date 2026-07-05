@@ -100,6 +100,7 @@
     "logout": "Sign out",
     "nav": {
       "dashboard": "Dashboard",
+      "wallets": "Wallets",
       "change_password": "Change password"
     },
     "dashboard": {
@@ -109,6 +110,42 @@
       "income": "Income",
       "expense": "Expenses",
       "coming_soon": "Indicators and the chart with mock data are coming in the next step."
+    },
+    "wallets": {
+      "title": "Wallets",
+      "subtitle": "Manage your wallets and share them with other people.",
+      "new": "New wallet",
+      "cancel": "Cancel",
+      "create": "Create wallet",
+      "save": "Save",
+      "edit": "Edit",
+      "delete": "Delete",
+      "back": "Back to wallets",
+      "name_label": "Name",
+      "name_placeholder": "e.g. Home, Trip, Company",
+      "description_label": "Description",
+      "description_placeholder": "Optional",
+      "empty": "You don't have any wallets yet. Create your first one!",
+      "owner": "Owner",
+      "created": "Wallet created successfully.",
+      "updated": "Wallet updated.",
+      "deleted": "Wallet deleted.",
+      "confirm_delete": "Delete this wallet? This removes all of its data.",
+      "confirm_remove_member": "Remove this member from the wallet?",
+      "member_added": "Member added.",
+      "member_updated": "Member role updated.",
+      "member_removed": "Member removed.",
+      "roles": {
+        "OWNER": "Owner",
+        "EDITOR": "Editor",
+        "VIEWER": "Viewer"
+      },
+      "members": {
+        "title": "Members",
+        "add": "Add",
+        "email_placeholder": "Member e-mail",
+        "remove": "Remove"
+      }
     },
     "change_password": {
       "title": "Change password",

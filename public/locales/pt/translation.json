@@ -100,6 +100,7 @@
     "logout": "Sair",
     "nav": {
       "dashboard": "Dashboard",
+      "wallets": "Carteiras",
       "change_password": "Alterar senha"
     },
     "dashboard": {
@@ -109,6 +110,42 @@
       "income": "Receitas",
       "expense": "Despesas",
       "coming_soon": "Os indicadores e o gráfico com dados mock chegam no próximo passo."
+    },
+    "wallets": {
+      "title": "Carteiras",
+      "subtitle": "Gerencie suas carteiras e compartilhe com outras pessoas.",
+      "new": "Nova carteira",
+      "cancel": "Cancelar",
+      "create": "Criar carteira",
+      "save": "Salvar",
+      "edit": "Editar",
+      "delete": "Excluir",
+      "back": "Voltar para carteiras",
+      "name_label": "Nome",
+      "name_placeholder": "Ex.: Casa, Viagem, Empresa",
+      "description_label": "Descrição",
+      "description_placeholder": "Opcional",
+      "empty": "Você ainda não tem carteiras. Crie a primeira!",
+      "owner": "Dono",
+      "created": "Carteira criada com sucesso.",
+      "updated": "Carteira atualizada.",
+      "deleted": "Carteira excluída.",
+      "confirm_delete": "Excluir esta carteira? Isso remove todos os dados dela.",
+      "confirm_remove_member": "Remover este membro da carteira?",
+      "member_added": "Membro adicionado.",
+      "member_updated": "Papel do membro atualizado.",
+      "member_removed": "Membro removido.",
+      "roles": {
+        "OWNER": "Dono",
+        "EDITOR": "Editor",
+        "VIEWER": "Visualizador"
+      },
+      "members": {
+        "title": "Membros",
+        "add": "Adicionar",
+        "email_placeholder": "E-mail do membro",
+        "remove": "Remover"
+      }
     },
     "change_password": {
       "title": "Alterar senha",

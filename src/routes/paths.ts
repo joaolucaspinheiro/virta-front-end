@@ -9,5 +9,10 @@ export const paths = {
   resetPasswordTo: (token: string) => `/redefinir-senha/${token}`,
   app: "/app",
   dashboard: "/app/dashboard",
+  wallets: "/app/carteiras",
+  /** Pattern used in the route definition (with :id). */
+  walletDetail: "/app/carteiras/:id",
+  /** Helper to build the concrete URL with a wallet id. */
+  walletDetailTo: (id: number | string) => `/app/carteiras/${id}`,
   changePassword: "/app/perfil/senha",
 } as const;

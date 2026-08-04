@@ -9,8 +9,10 @@ import { RegisterPage } from "@/pages/RegisterPage";
 import { ForgotPasswordPage } from "@/pages/ForgotPasswordPage";
 import { ResetPasswordPage } from "@/pages/ResetPasswordPage";
 import { DashboardPage } from "@/pages/DashboardPage";
-import { WalletsPage } from "@/pages/WalletsPage";
-import { WalletDetailPage } from "@/pages/WalletDetailPage";
+import { TransactionsPage } from "@/pages/TransactionsPage";
+import { MembersPage } from "@/pages/MembersPage";
+import { CategoriesPage } from "@/pages/CategoriesPage";
+import { WalletSettingsPage } from "@/pages/WalletSettingsPage";
 import { ProfilePage } from "@/pages/ProfilePage";
 import { ChangePasswordPage } from "@/pages/ChangePasswordPage";
 import "./App.css";
@@ -32,8 +34,10 @@ function App() {
       <Route element={<ProtectedRoute />}>
         <Route element={<AppLayout />}>
           <Route path={paths.dashboard} element={<DashboardPage />} />
-          <Route path={paths.wallets} element={<WalletsPage />} />
-          <Route path={paths.walletDetail} element={<WalletDetailPage />} />
+          <Route path={paths.transactions} element={<TransactionsPage />} />
+          <Route path={paths.members} element={<MembersPage />} />
+          <Route path={paths.categories} element={<CategoriesPage />} />
+          <Route path={paths.walletSettings} element={<WalletSettingsPage />} />
           <Route path={paths.profile} element={<ProfilePage />} />
           <Route path={paths.changePassword} element={<ChangePasswordPage />} />
         </Route>

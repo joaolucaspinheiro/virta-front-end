@@ -101,8 +101,45 @@
     "nav": {
       "dashboard": "Dashboard",
       "wallets": "Wallets",
+      "transactions": "Transactions",
+      "members": "Members",
+      "categories": "Categories",
+      "settings": "Wallet settings",
       "profile": "Profile",
       "change_password": "Change password"
+    },
+    "switcher": {
+      "label": "Selected wallet",
+      "none": "No wallet",
+      "your_wallets": "Your wallets"
+    },
+    "categories": {
+      "title": "Categories",
+      "subtitle": "Organize your income and expenses into categories.",
+      "search_placeholder": "Search by name...",
+      "filter_all": "All",
+      "no_results": "No categories found.",
+      "new": "New category",
+      "name": "Name",
+      "name_placeholder": "e.g. Food, Salary",
+      "type": "Type",
+      "income": "Income",
+      "expense": "Expense",
+      "color": "Color",
+      "add": "Add",
+      "save": "Save",
+      "edit": "Edit category",
+      "edit_action": "Edit",
+      "empty": "You don't have any categories yet. Create your first one!",
+      "created": "Category created.",
+      "updated": "Category updated.",
+      "deleted": "Category removed.",
+      "confirm_delete": "Remove this category?"
+    },
+    "wallet_settings": {
+      "title": "Wallet settings",
+      "subtitle": "Edit the details or delete this wallet.",
+      "no_wallet": "Select or create a wallet to get started."
     },
     "profile": {
       "title": "Profile",
@@ -121,7 +158,36 @@
       "balance": "Current balance",
       "income": "Income",
       "expense": "Expenses",
-      "coming_soon": "Indicators and the chart with mock data are coming in the next step."
+      "transaction_count": "Transactions",
+      "select_wallet": "Wallet",
+      "chart_title": "Income vs. Expenses by month",
+      "by_category": "By category",
+      "recent": "Recent transactions",
+      "no_transactions": "No transactions yet.",
+      "empty_wallets": "Create a wallet to see your financial summary.",
+      "go_to_wallets": "Go to wallets"
+    },
+    "transactions": {
+      "title": "Transactions",
+      "new": "New transaction",
+      "type": "Type",
+      "income": "Income",
+      "expense": "Expense",
+      "amount": "Amount",
+      "description": "Description",
+      "description_placeholder": "Optional",
+      "date": "Date",
+      "category": "Category",
+      "no_category": "No category",
+      "add": "Add",
+      "save": "Save",
+      "edit": "Edit transaction",
+      "edit_action": "Edit",
+      "empty": "No transactions in this wallet yet.",
+      "created": "Transaction added.",
+      "updated": "Transaction updated.",
+      "deleted": "Transaction removed.",
+      "confirm_delete": "Remove this transaction?"
     },
     "wallets": {
       "title": "Wallets",

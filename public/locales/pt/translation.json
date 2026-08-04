@@ -101,8 +101,45 @@
     "nav": {
       "dashboard": "Dashboard",
       "wallets": "Carteiras",
+      "transactions": "Transações",
+      "members": "Membros",
+      "categories": "Categorias",
+      "settings": "Configurações da carteira",
       "profile": "Perfil",
       "change_password": "Alterar senha"
+    },
+    "switcher": {
+      "label": "Carteira selecionada",
+      "none": "Nenhuma carteira",
+      "your_wallets": "Suas carteiras"
+    },
+    "categories": {
+      "title": "Categorias",
+      "subtitle": "Organize suas receitas e despesas em categorias.",
+      "search_placeholder": "Buscar por nome...",
+      "filter_all": "Todas",
+      "no_results": "Nenhuma categoria encontrada.",
+      "new": "Nova categoria",
+      "name": "Nome",
+      "name_placeholder": "Ex.: Alimentação, Salário",
+      "type": "Tipo",
+      "income": "Receita",
+      "expense": "Despesa",
+      "color": "Cor",
+      "add": "Adicionar",
+      "save": "Salvar",
+      "edit": "Editar categoria",
+      "edit_action": "Editar",
+      "empty": "Você ainda não tem categorias. Crie a primeira!",
+      "created": "Categoria criada.",
+      "updated": "Categoria atualizada.",
+      "deleted": "Categoria removida.",
+      "confirm_delete": "Remover esta categoria?"
+    },
+    "wallet_settings": {
+      "title": "Configurações da carteira",
+      "subtitle": "Edite os dados ou exclua esta carteira.",
+      "no_wallet": "Selecione ou crie uma carteira para começar."
     },
     "profile": {
       "title": "Perfil",
@@ -121,7 +158,36 @@
       "balance": "Saldo atual",
       "income": "Receitas",
       "expense": "Despesas",
-      "coming_soon": "Os indicadores e o gráfico com dados mock chegam no próximo passo."
+      "transaction_count": "Lançamentos",
+      "select_wallet": "Carteira",
+      "chart_title": "Receitas x Despesas por mês",
+      "by_category": "Por categoria",
+      "recent": "Lançamentos recentes",
+      "no_transactions": "Nenhum lançamento ainda.",
+      "empty_wallets": "Crie uma carteira para ver seu resumo financeiro.",
+      "go_to_wallets": "Ir para carteiras"
+    },
+    "transactions": {
+      "title": "Transações",
+      "new": "Novo lançamento",
+      "type": "Tipo",
+      "income": "Receita",
+      "expense": "Despesa",
+      "amount": "Valor",
+      "description": "Descrição",
+      "description_placeholder": "Opcional",
+      "date": "Data",
+      "category": "Categoria",
+      "no_category": "Sem categoria",
+      "add": "Adicionar",
+      "save": "Salvar",
+      "edit": "Editar lançamento",
+      "edit_action": "Editar",
+      "empty": "Nenhuma transação nesta carteira ainda.",
+      "created": "Lançamento adicionado.",
+      "updated": "Lançamento atualizado.",
+      "deleted": "Lançamento removido.",
+      "confirm_delete": "Remover este lançamento?"
     },
     "wallets": {
       "title": "Carteiras",

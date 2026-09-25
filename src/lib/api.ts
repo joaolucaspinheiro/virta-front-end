@@ -13,7 +13,8 @@ export interface ForgotPasswordResponse {
 async function handleResponse<T>(res: Response): Promise<T> {
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    throw new Error((data as Record<string, string>).error ?? "Unexpected error");
+    const body = data as Record<string, string>;
+    throw new Error(body.error ?? Object.values(body)[0] ?? "Unexpected error");
   }
   return data as T;
 }

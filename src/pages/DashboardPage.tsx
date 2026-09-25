@@ -22,7 +22,7 @@ import {
 } from "recharts";
 import { useAuth } from "@/context/AuthContext";
 import { useWallet } from "@/context/WalletContext";
-import { getSummary, listTransactions } from "@/services/transactionService";
+import { getSummary, listTransactions, subscribeToWalletEvents } from "@/services/transactionService";
 import type { DashboardSummary, Transaction } from "@/types/transaction";
 import { NoWalletSelected } from "@/components/wallet/NoWalletSelected";
 import { CategoryBadge } from "@/components/CategoryBadge";
@@ -41,6 +41,7 @@ export function DashboardPage() {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [recent, setRecent] = useState<Transaction[]>([]);
   const [loadingData, setLoadingData] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const walletId = selectedWallet?.id ?? null;
 
@@ -72,6 +73,11 @@ export function DashboardPage() {
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [walletId, refreshKey]);
+
+  useEffect(() => {
+    if(walletId == null) return;
+    return subscribeToWalletEvents(walletId, ()=> setRefreshKey((k)=> k+1));
   }, [walletId]);
 
   const chartData = useMemo(

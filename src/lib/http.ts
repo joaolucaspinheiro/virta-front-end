@@ -32,12 +32,12 @@ export async function apiFetch<T>(
   if (res.status === 204) {
     return undefined as T;
   }
-
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
+    const body = data as Record<string, string>;
     throw new ApiError(
-      (data as { error?: string }).error ?? "Unexpected error",
-      res.status,
+        body.error ?? Object.values(body)[0] ?? "Unexpected error",
+        res.status,
     );
   }
   return data as T;

@@ -5,8 +5,35 @@ import type {
   TransactionInput,
   TransactionType,
 } from "@/types/transaction";
+import {getStoredToken} from "@/lib/session";
 
 const base = (walletId: number) => `/api/v1/wallets/${walletId}/transactions`;
+
+
+export function subscribeToWalletEvents(walletId: number, onChange: () => void): () => void {
+  const controller = new AbortController();
+  (async () => {
+    try{
+      const res = await fetch(`${base(walletId)}/events`, {
+        headers: {Authorization: `Bearer ${getStoredToken()}` },
+        signal: controller.signal,
+      });
+      if(!res.ok || !res.body) return;
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      while(true){
+        const {value, done} = await reader.read();
+        if(done) break;
+        if(decoder.decode(value).includes("transaction-changed")){
+          onChange();
+        }
+      }
+    } catch{
+//abort
+    }
+  })();
+  return () => controller.abort();
+}
 
 export function listTransactions(
   walletId: number,

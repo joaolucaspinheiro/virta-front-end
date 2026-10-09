@@ -12,7 +12,6 @@ import type { WalletMember, WalletRole } from "@/types/wallet";
 import { useWallet } from "@/context/WalletContext";
 import { RoleBadge } from "@/components/wallet/RoleBadge";
 import { NoWalletSelected } from "@/components/wallet/NoWalletSelected";
-import { paths } from "@/routes/paths";
 import {
   Select,
   SelectContent,
@@ -71,9 +70,8 @@ export function MembersPage() {
         email: memberEmail.trim(),
         role: memberRole,
       });
-      if (res.created && res.debugToken) {
-        const link = window.location.origin + paths.resetPasswordTo(res.debugToken);
-        toast.success(t("app.wallets.member_invited"), { description: link });
+      if (res.created) {
+        toast.success(t("app.wallets.member_invited"));
       } else {
         toast.success(t("app.wallets.member_added"));
       }

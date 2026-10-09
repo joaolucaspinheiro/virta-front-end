@@ -13,7 +13,7 @@ export function ForgotPasswordPage() {
   const [loading, setLoading] = useState(false);
   const [fieldError, setFieldError] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
-  const [debugToken, setDebugToken] = useState<string | null>(null);
+
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -28,8 +28,7 @@ export function ForgotPasswordPage() {
     setFieldError(null);
     setLoading(true);
     try {
-      const { debugToken } = await forgotPassword(email);
-      setDebugToken(debugToken ?? null);
+      await forgotPassword(email);
       setSent(true);
     } finally {
       setLoading(false);
@@ -53,18 +52,6 @@ export function ForgotPasswordPage() {
             {/* Neutral message: never reveals whether the e-mail exists. */}
             <p className="text-sm text-zinc-600">{t("login.recover.success")}</p>
           </div>
-
-          {debugToken && (
-            <div className="rounded-lg border border-dashed border-amber-300 bg-amber-50 p-3 text-left text-xs text-amber-800">
-              <p className="mb-1 font-medium">{t("login.recover.debug_hint")}</p>
-              <Link
-                to={paths.resetPasswordTo(debugToken)}
-                className="break-all font-mono text-brand-500 hover:underline"
-              >
-                {paths.resetPasswordTo(debugToken)}
-              </Link>
-            </div>
-          )}
 
           <Link
             to={paths.login}

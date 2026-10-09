@@ -47,8 +47,7 @@
     "recover": {
       "title": "Recover password",
       "description": "Enter your email and we will send reset instructions.",
-      "success": "If this email is registered, you will receive instructions shortly.",
-      "debug_hint": "Test link (mock — in production it would be emailed):"
+      "success": "If this email is registered, you will receive instructions shortly."
     },
 
     "reset": {

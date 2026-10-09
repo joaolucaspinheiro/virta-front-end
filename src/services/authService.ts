@@ -98,15 +98,14 @@ export async function loginWithGoogle(credential: string): Promise<AuthSession> 
 }
 
 /**
- * Recovery step 1. The UI message stays neutral; the backend returns a debugToken
- * (test helper) only when the e-mail exists.
+ * Recovery step 1. The UI message stays neutral; the reset link is sent by
+ * e-mail, only when the e-mail exists.
  */
 export async function forgotPassword(
   email: string,
-): Promise<{ debugToken?: string }> {
+): Promise<void> {
   try {
-    const data = await apiForgotPassword(email);
-    return { debugToken: data.debugToken ?? undefined };
+    await apiForgotPassword(email);
   } catch (err) {
     throw toAuthError(err);
   }

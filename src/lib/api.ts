@@ -7,7 +7,6 @@ export interface LoginResponse {
 
 export interface ForgotPasswordResponse {
   message: string;
-  debugToken?: string | null;
 }
 
 async function handleResponse<T>(res: Response): Promise<T> {

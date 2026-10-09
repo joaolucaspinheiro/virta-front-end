@@ -47,8 +47,7 @@
     "recover": {
       "title": "Recuperar senha",
       "description": "Informe seu e-mail e enviaremos as instruções de redefinição.",
-      "success": "Se este e-mail estiver cadastrado, você receberá as instruções em breve.",
-      "debug_hint": "Link de teste (mock — em produção iria por e-mail):"
+      "success": "Se este e-mail estiver cadastrado, você receberá as instruções em breve."
     },
 
     "reset": {

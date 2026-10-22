@@ -6,6 +6,7 @@ import type {
   TransactionType,
 } from "@/types/transaction";
 import {getStoredToken} from "@/lib/session";
+import { env } from "@/config/env";
 
 const base = (walletId: number) => `/api/v1/wallets/${walletId}/transactions`;
 
@@ -14,7 +15,7 @@ export function subscribeToWalletEvents(walletId: number, onChange: () => void):
   const controller = new AbortController();
   (async () => {
     try{
-      const res = await fetch(`${base(walletId)}/events`, {
+      const res = await fetch(`${env.apiUrl}${base(walletId)}/events`, {
         headers: {Authorization: `Bearer ${getStoredToken()}` },
         signal: controller.signal,
       });

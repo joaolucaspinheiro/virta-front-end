@@ -1,4 +1,5 @@
 import { getStoredToken } from "@/lib/session";
+import { env } from "@/config/env";
 
 /** Error carrying the HTTP status alongside the backend message. */
 export class ApiError extends Error {
@@ -19,7 +20,7 @@ export async function apiFetch<T>(
   options: RequestInit = {},
 ): Promise<T> {
   const token = getStoredToken();
-  const res = await fetch(path, {
+  const res = await fetch(`${env.apiUrl}${path}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",

@@ -1,3 +1,5 @@
+import { env } from "@/config/env";
+
 export interface LoginResponse {
   token: string;
   id: number;
@@ -19,7 +21,7 @@ async function handleResponse<T>(res: Response): Promise<T> {
 }
 
 export async function apiLogin(email: string, password: string): Promise<LoginResponse> {
-  const res = await fetch("/auth/login", {
+  const res = await fetch(`${env.apiUrl}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -28,7 +30,7 @@ export async function apiLogin(email: string, password: string): Promise<LoginRe
 }
 
 export async function apiRegister(name: string, email: string, password: string): Promise<void> {
-  const res = await fetch("/auth/register", {
+  const res = await fetch(`${env.apiUrl}/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, email, password }),
@@ -37,7 +39,7 @@ export async function apiRegister(name: string, email: string, password: string)
 }
 
 export async function apiGoogleLogin(credential: string): Promise<LoginResponse> {
-  const res = await fetch("/auth/google", {
+  const res = await fetch(`${env.apiUrl}/auth/google`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ credential }),
@@ -46,7 +48,7 @@ export async function apiGoogleLogin(credential: string): Promise<LoginResponse>
 }
 
 export async function apiForgotPassword(email: string): Promise<ForgotPasswordResponse> {
-  const res = await fetch("/auth/forgot-password", {
+  const res = await fetch(`${env.apiUrl}/auth/forgot-password`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email }),
@@ -55,7 +57,7 @@ export async function apiForgotPassword(email: string): Promise<ForgotPasswordRe
 }
 
 export async function apiResetPassword(token: string, newPassword: string): Promise<void> {
-  const res = await fetch("/auth/reset-password", {
+  const res = await fetch(`${env.apiUrl}/auth/reset-password`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ token, newPassword }),

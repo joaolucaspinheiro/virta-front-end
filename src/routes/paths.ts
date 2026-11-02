@@ -15,4 +15,5 @@ export const paths = {
   walletSettings: "/app/carteira",
   profile: "/app/perfil",
   changePassword: "/app/perfil/senha",
+  reports: "/app/relatorios",
 } as const;

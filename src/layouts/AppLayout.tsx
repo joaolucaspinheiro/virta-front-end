@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   LogOut,
   Settings,
+    FileText,
   Tags,
   User,
   Users,
@@ -67,6 +68,11 @@ export function AppLayout() {
               to={paths.categories}
               icon={<Tags className="h-4 w-4" />}
               label={t("app.nav.categories")}
+            />
+            <SidebarLink
+                to={paths.reports}
+                icon={<FileText className="h-4 w-4" />}
+                label={t("app.nav.reports")}
             />
             <SidebarLink
               to={paths.walletSettings}

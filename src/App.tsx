@@ -15,6 +15,7 @@ import { CategoriesPage } from "@/pages/CategoriesPage";
 import { WalletSettingsPage } from "@/pages/WalletSettingsPage";
 import { ProfilePage } from "@/pages/ProfilePage";
 import { ChangePasswordPage } from "@/pages/ChangePasswordPage";
+import { ReportsPage } from "@/pages/ReportsPage";
 import "./App.css";
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
           <Route path={paths.walletSettings} element={<WalletSettingsPage />} />
           <Route path={paths.profile} element={<ProfilePage />} />
           <Route path={paths.changePassword} element={<ChangePasswordPage />} />
+            <Route path={paths.reports} element={<ReportsPage />} />
         </Route>
       </Route>
 

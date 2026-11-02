@@ -103,6 +103,7 @@
       "transactions": "Transações",
       "members": "Membros",
       "categories": "Categorias",
+      "reports": "Relatórios",
       "settings": "Configurações da carteira",
       "profile": "Perfil",
       "change_password": "Alterar senha"
@@ -111,6 +112,37 @@
       "label": "Carteira selecionada",
       "none": "Nenhuma carteira",
       "your_wallets": "Suas carteiras"
+    },
+    "reports": {
+      "title": "Relatórios",
+      "subtitle": "Escolha o período e os filtros, veja o resumo e baixe o extrato.",
+      "from_label": "De",
+      "to_label": "Até",
+      "invalid_range": "O mês inicial não pode ser depois do mês final.",
+      "presets": {
+        "this_month": "Este mês",
+        "last_3": "Últimos 3 meses",
+        "last_6": "Últimos 6 meses",
+        "this_year": "Este ano"
+      },
+      "type_label": "Tipo",
+      "type_all": "Todos",
+      "type_income": "Receitas",
+      "type_expense": "Despesas",
+      "categories_label": "Categorias",
+      "categories_hint": "Sem nenhuma selecionada, todas entram no relatório.",
+      "categories_none": "Nenhuma categoria com lançamentos neste período.",
+      "clear_filters": "Limpar filtros",
+      "download": "Baixar extrato (CSV)",
+      "downloading": "Gerando...",
+      "count_one": "{{count}} transação no período",
+      "count_other": "{{count}} transações no período",
+      "income": "Receitas",
+      "expense": "Despesas",
+      "balance": "Saldo",
+      "by_month": "Mês a mês",
+      "by_category": "Por categoria",
+      "empty": "Nenhuma transação com esses filtros."
     },
     "categories": {
       "title": "Categorias",

@@ -72,6 +72,27 @@ export function deleteTransaction(
   return apiFetch<void>(`${base(walletId)}/${id}`, { method: "DELETE" });
 }
 
-export function getSummary(walletId: number): Promise<DashboardSummary> {
-  return apiFetch<DashboardSummary>(`/api/v1/wallets/${walletId}/summary`);
+/** Optional filters for the summary. Missing/empty values mean "everything". */
+export interface SummaryFilters {
+  /** ISO dates, e.g. "2026-11-01". Only applied when both are present. */
+  startDate?: string;
+  endDate?: string;
+  categoryIds?: number[];
+  type?: TransactionType;
+}
+
+export function getSummary(
+  walletId: number,
+  filters: SummaryFilters = {},
+): Promise<DashboardSummary> {
+  const params = new URLSearchParams();
+  if (filters.startDate && filters.endDate) {
+    params.set("startDate", filters.startDate);
+    params.set("endDate", filters.endDate);
+  }
+  filters.categoryIds?.forEach((id) => params.append("categoryIds", String(id)));
+  if (filters.type) params.set("type", filters.type);
+  const qs = params.toString();
+  const query = qs ? `?${qs}` : "";
+  return apiFetch<DashboardSummary>(`/api/v1/wallets/${walletId}/summary${query}`);
 }

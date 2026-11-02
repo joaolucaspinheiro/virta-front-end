@@ -213,6 +213,7 @@
       "member_invited": "Convite enviado! A pessoa precisa definir a senha pelo link.",
       "member_updated": "Papel do membro atualizado.",
       "member_removed": "Membro removido.",
+      "delete_last_hint": "Você precisa ter pelo menos uma carteira. Crie outra antes de excluir esta.",
       "roles": {
         "OWNER": "Dono",
         "EDITOR": "Editor",

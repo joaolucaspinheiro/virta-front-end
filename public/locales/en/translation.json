@@ -213,6 +213,7 @@
       "member_invited": "Invite sent! They need to set a password via the link.",
       "member_updated": "Member role updated.",
       "member_removed": "Member removed.",
+      "delete_last_hint": "You need at least one wallet. Create another one before deleting this.",
       "roles": {
         "OWNER": "Owner",
         "EDITOR": "Editor",

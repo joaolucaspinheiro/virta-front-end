@@ -9,8 +9,7 @@ import { NoWalletSelected } from "@/components/wallet/NoWalletSelected";
 
 export function WalletSettingsPage() {
   const { t } = useTranslation();
-  const { selectedWallet, loading, reloadWallets } = useWallet();
-
+  const { wallets, selectedWallet, loading, reloadWallets } = useWallet();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [saving, setSaving] = useState(false);
@@ -23,6 +22,8 @@ export function WalletSettingsPage() {
   }, [selectedWallet]);
 
   const isOwner = selectedWallet?.role === "OWNER";
+  const ownedCount = wallets.filter((w) => w.role === "OWNER").length;
+  const isLastOwned = isOwner && ownedCount <= 1;
   const inputClass =
     "w-full h-11 px-4 rounded-lg border border-zinc-200 outline-none transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 disabled:bg-zinc-50 disabled:text-zinc-500";
 
@@ -129,14 +130,23 @@ export function WalletSettingsPage() {
                 >
                   {saving ? t("login.actions.loading") : t("app.wallets.save")}
                 </button>
-                <button
-                  type="button"
-                  onClick={handleDelete}
-                  className="inline-flex h-10 items-center gap-1.5 rounded-lg px-4 font-medium text-red-600 transition-colors hover:bg-red-50 cursor-pointer"
-                >
-                  <Trash2 className="h-4 w-4" />
-                  {t("app.wallets.delete")}
-                </button>
+                <div className="flex flex-col items-end gap-1">
+                  <button
+                      type="button"
+                      onClick={handleDelete}
+                      disabled={isLastOwned}
+                      aria-describedby={isLastOwned ? "ws-delete-hint" : undefined}
+                      className="inline-flex h-10 items-center gap-1.5 rounded-lg px-4 font-medium text-red-600 transition-colors hover:bg-red-50 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    {t("app.wallets.delete")}
+                  </button>
+                  {isLastOwned && (
+                      <p id="ws-delete-hint" className="text-xs text-zinc-500">
+                        {t("app.wallets.delete_last_hint")}
+                      </p>
+                  )}
+                </div>
               </div>
             )}
           </form>

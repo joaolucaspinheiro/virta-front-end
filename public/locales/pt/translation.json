@@ -144,6 +144,21 @@
       "by_category": "Por categoria",
       "empty": "Nenhuma transação com esses filtros."
     },
+    "assistant": {
+      "title": "Assistente Virta",
+      "open": "Abrir assistente",
+      "close": "Fechar assistente",
+      "no_wallet": "Selecione uma carteira",
+      "empty": "Olá! Posso registrar gastos e receitas, criar categorias e responder sobre suas finanças. Experimente:",
+      "suggestion_summary": "Quanto gastei este mês?",
+      "suggestion_expense": "Gastei 45 reais no mercado hoje",
+      "suggestion_category": "Crie a categoria Academia",
+      "placeholder": "Escreva uma mensagem...",
+      "send": "Enviar",
+      "thinking": "Pensando...",
+      "saved_one": "1 alteração feita pelo assistente",
+      "saved_other": "{{count}} alterações feitas pelo assistente"
+    },
     "categories": {
       "title": "Categorias",
       "subtitle": "Organize suas receitas e despesas em categorias.",

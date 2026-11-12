@@ -26,7 +26,7 @@ Projeto da Atividade Final da disciplina de Programação para Web (React + Spri
 - **Relatórios**: filtro por período (vários meses), tipo e categorias; resumo, gráfico mês a mês e por categoria, e **extrato em CSV** para abrir no Excel.
 - **PWA**: instalável no celular e no computador, com funcionamento offline dos arquivos do app.
 - **Internacionalização**: português e inglês.
-- **Integração com IA**: _pendente — esta seção será atualizada._
+- **Assistente com IA (Gemini)**: um chat, disponível em todas as telas, que **executa ações de verdade**: registra gastos e receitas ("gastei 45 no mercado hoje"), cria categorias e responde perguntas sobre as finanças ("quanto gastei em outubro?"). O que ele lança aparece no dashboard em tempo real.
 
 ## Arquitetura
 
@@ -37,7 +37,7 @@ Projeto da Atividade Final da disciplina de Programação para Web (React + Spri
 └────────────────────────┘   JSON / SSE     └──────────────────────────┘
                                                  │ HTTPS
                                                  ▼
-                                          Brevo (e-mails transacionais)
+                                Brevo (e-mails)  ·  Gemini (assistente de IA)
 ```
 
 **Back-end** (`virta-back-end`), organizado em camadas:
@@ -51,6 +51,24 @@ Projeto da Atividade Final da disciplina de Programação para Web (React + Spri
 - `event` — eventos de domínio para o tempo real.
 
 **Front-end** (`virta-front-end`): React 19 + TypeScript + Vite, Tailwind CSS 4 e componentes Radix, React Router, Recharts para gráficos, i18next para idiomas e `vite-plugin-pwa` para o PWA. As chamadas à API ficam em `src/services`, e o estado da carteira selecionada em um contexto (`WalletContext`).
+
+## Assistente com IA (Gemini)
+
+O assistente usa **function calling**: o back-end envia ao Gemini a conversa e uma lista de "ferramentas" (criar transação, criar categoria, consultar resumo, listar últimas transações). O Gemini **não acessa o banco**: ele só pede uma ferramenta, e quem a executa é o back-end, que devolve o resultado até o Gemini responder em texto.
+
+```
+Usuário: "gastei 45 no mercado hoje"
+  → back-end envia conversa + ferramentas ao Gemini
+  ← Gemini: chame create_transaction(EXPENSE, 45, "Mercado", hoje, "Alimentação")
+  → back-end executa com o TransactionService (mesmas regras da API)
+  ← Gemini: "Pronto! Lancei R$ 45,00 em Alimentação."
+```
+
+- **Mesmas regras da API**: as ferramentas chamam os services existentes, com o usuário logado. Um **leitor** não consegue lançar nada pelo chat, e os dados são validados como em qualquer requisição (as ferramentas rodam o `Validator`, já que o `@Valid` dos controllers não se aplica ali).
+- **A chave fica só no back-end** (`GEMINI_API_KEY`); o navegador nunca a vê.
+- **Minimização de dados**: ao Gemini vão só valores, datas, descrições e nomes de categoria — nunca e-mails nem nomes de quem lançou cada transação.
+- **Limites**: até 15 mensagens a cada 10 minutos por usuário (HTTP 429), até 20 mensagens de histórico e no máximo 5 rodadas de ferramentas por mensagem.
+- **Configuração**: crie uma chave gratuita em [Google AI Studio](https://aistudio.google.com) (*Get API key*) e defina `GEMINI_API_KEY` e `GEMINI_MODEL` (um modelo *Flash*; os disponíveis para a sua chave aparecem em `GET https://generativelanguage.googleapis.com/v1beta/models`). Localmente, use `gemini.api-key` e `gemini.model` no `application-secrets.properties`.
 
 ## Decisões de projeto
 
@@ -73,7 +91,8 @@ Projeto da Atividade Final da disciplina de Programação para Web (React + Spri
 | Falhas de autenticação | Senhas com BCrypt; JWT assinado; token de recuperação de uso único, válido por 1 hora e enviado só por e-mail. |
 | Segredos | Nenhuma credencial no repositório: tudo vem de variáveis de ambiente ou de `application-secrets.properties` (no `.gitignore`). |
 | CSRF | Desabilitado de propósito: a API é stateless e usa JWT no cabeçalho, sem cookies de sessão. |
-| Dados pessoais (LGPD) | E-mails são mascarados nos logs; a chave do provedor de e-mail só tem permissão de envio. |
+| Dados pessoais (LGPD) | E-mails são mascarados nos logs; a chave do provedor de e-mail só tem permissão de envio; ao Gemini só vão dados financeiros agregados ou anônimos. |
+| Abuso do assistente de IA | Limite por usuário, tamanho máximo de mensagem e de histórico, e as ações passam pelas mesmas regras de permissão e validação da API. |
 
 ## Como rodar localmente
 
@@ -126,6 +145,8 @@ Testes unitários (JUnit 5 + Mockito + AssertJ) cobrem as regras mais sensíveis
 | `APP_FRONTEND_URL` | Endereço do front, ex.: `https://virta-front-end.vercel.app`. Usado no CORS e nos links dos e-mails |
 | `BREVO_API_KEY` | Chave da API do Brevo (permissão só de e-mails transacionais) |
 | `MAIL_FROM` | E-mail remetente, verificado no Brevo |
+| `GEMINI_API_KEY` | Chave da API do Gemini (Google AI Studio) |
+| `GEMINI_MODEL` | Modelo usado pelo assistente, ex.: `gemini-3.6-flash` |
 | `GOOGLE_CLIENT_ID` | Opcional: Client ID do login com Google (há um valor padrão) |
 | `PORT` | Definida pelo Render; localmente o padrão é 8080 |
 
@@ -154,5 +175,6 @@ As variáveis `VITE_` entram no momento do build: depois de alterá-las na Verce
 | `GET /api/v1/wallets/{id}/transactions/events` | Stream SSE de atualizações em tempo real |
 | `GET /api/v1/wallets/{id}/summary` | Resumo (aceita período, categorias e tipo) |
 | `GET /api/v1/wallets/{id}/reports/statement` | Extrato em CSV (`from`, `to`, `categoryIds`, `type`) |
+| `POST /api/v1/wallets/{id}/assistant` | Conversa com o assistente de IA (envia o histórico, recebe a resposta e as ações feitas) |
 
 A documentação completa, com os formatos de entrada e saída, está no Swagger.

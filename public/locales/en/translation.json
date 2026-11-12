@@ -139,6 +139,21 @@
       "by_category": "By category",
       "empty": "No transactions match these filters."
     },
+    "assistant": {
+      "title": "Virta Assistant",
+      "open": "Open assistant",
+      "close": "Close assistant",
+      "no_wallet": "Select a wallet",
+      "empty": "Hi! I can record expenses and income, create categories and answer questions about your finances. Try:",
+      "suggestion_summary": "How much did I spend this month?",
+      "suggestion_expense": "I spent 45 reais at the supermarket today",
+      "suggestion_category": "Create the category Gym",
+      "placeholder": "Write a message...",
+      "send": "Send",
+      "thinking": "Thinking...",
+      "saved_one": "1 change made by the assistant",
+      "saved_other": "{{count}} changes made by the assistant"
+    },
     "switcher": {
       "label": "Selected wallet",
       "none": "No wallet",

@@ -18,6 +18,7 @@ import { paths } from "@/routes/paths";
 import { WaveMark } from "@/components/WaveMark";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { WalletSwitcher } from "@/components/wallet/WalletSwitcher";
+import { AssistantChat } from "@/components/AssistantChat";
 
 /** Authenticated area shell: sidebar nav + top bar + content (Outlet). */
 export function AppLayout() {
@@ -113,6 +114,7 @@ export function AppLayout() {
           </main>
         </div>
       </div>
+      <AssistantChat />
     </WalletProvider>
   );
 }
@@ -148,7 +150,7 @@ function UserMenu({
         <DropdownMenu.Content
           align="end"
           sideOffset={8}
-          className="z-50 min-w-[13rem] rounded-xl border border-zinc-200 bg-white p-1 shadow-lg"
+          className="z-50 min-w-52 rounded-xl border border-zinc-200 bg-white p-1 shadow-lg"
         >
           <div className="px-2 py-2">
             <p className="truncate text-sm font-medium text-zinc-900">{name}</p>
@@ -157,14 +159,14 @@ function UserMenu({
           <DropdownMenu.Separator className="my-1 h-px bg-zinc-100" />
           <DropdownMenu.Item
             onSelect={() => navigate(paths.profile)}
-            className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-2 text-sm text-zinc-700 outline-none transition-colors data-[highlighted]:bg-zinc-100"
+            className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-2 text-sm text-zinc-700 outline-none transition-colors data-highlighted:bg-zinc-100"
           >
             <User className="h-4 w-4" />
             {t("app.nav.profile")}
           </DropdownMenu.Item>
           <DropdownMenu.Item
             onSelect={onLogout}
-            className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-2 text-sm text-red-600 outline-none transition-colors data-[highlighted]:bg-red-50"
+            className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-2 text-sm text-red-600 outline-none transition-colors data-highlighted:bg-red-50"
           >
             <LogOut className="h-4 w-4" />
             {t("app.logout")}

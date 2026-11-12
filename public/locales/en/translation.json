@@ -43,6 +43,14 @@
       "or": "or",
       "not_configured": "Set VITE_GOOGLE_CLIENT_ID in the .env.local file to enable Google sign-in."
     },
+    "totp": {
+      "title": "Two-step verification",
+      "description": "Enter the 6-digit code from your authenticator app.",
+      "code_label": "Code",
+      "recovery_hint": "No phone? Use one of your recovery codes.",
+      "submit": "Verify",
+      "back": "Back to login"
+    },
 
     "recover": {
       "title": "Recover password",
@@ -186,6 +194,30 @@
       "title": "Wallet settings",
       "subtitle": "Edit the details or delete this wallet.",
       "no_wallet": "Select or create a wallet to get started."
+    },
+    "two_factor": {
+      "title": "Two-step verification",
+      "description": "Besides your password, ask for a 6-digit code from an authenticator app (Google or Microsoft Authenticator) when signing in.",
+      "google_account": "Your account signs in with Google, which already has its own two-step verification. Turn it on in your Google Account settings.",
+      "status_on": "On",
+      "status_off": "Off",
+      "enable": "Turn on",
+      "step_scan": "1. Scan the QR code with your authenticator app.",
+      "step_manual": "Can't scan it? Type this key into the app:",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "step_confirm": "2. Enter the 6-digit code shown in the app:",
+      "confirm": "Confirm and turn on",
+      "cancel": "Cancel",
+      "enabled": "Two-step verification is on.",
+      "codes_title": "Save your recovery codes",
+      "codes_description": "If you lose your phone, use one of these codes instead of the app code. Each works only once and they won't be shown again.",
+      "copy_codes": "Copy codes",
+      "codes_saved": "I saved my codes",
+      "disable_description": "To turn it off, enter a code from the app or a recovery code.",
+      "disable": "Turn off",
+      "disabled": "Two-step verification is off.",
+      "code_label": "Code"
     },
     "profile": {
       "title": "Profile",

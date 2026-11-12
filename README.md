@@ -18,7 +18,7 @@ Projeto da Atividade Final da disciplina de Programação para Web (React + Spri
 
 ## Funcionalidades
 
-- **Contas**: cadastro e login com e-mail e senha (JWT) ou com Google; recuperação de senha por e-mail.
+- **Contas**: cadastro e login com e-mail e senha (JWT) ou com Google; recuperação de senha por e-mail; **verificação em duas etapas (TOTP)** opcional, com app autenticador e códigos de recuperação.
 - **Carteiras compartilhadas**: toda conta nasce com uma carteira padrão ("Minha carteira"); o dono convida membros por e-mail e define o papel de cada um. Ninguém pode excluir a última carteira de que é dono.
 - **Transações e categorias**: receitas e despesas com categoria, data e descrição.
 - **Dashboard**: indicadores de receitas, despesas e saldo, e gráfico mês a mês.
@@ -51,6 +51,18 @@ Projeto da Atividade Final da disciplina de Programação para Web (React + Spri
 - `event` — eventos de domínio para o tempo real.
 
 **Front-end** (`virta-front-end`): React 19 + TypeScript + Vite, Tailwind CSS 4 e componentes Radix, React Router, Recharts para gráficos, i18next para idiomas e `vite-plugin-pwa` para o PWA. As chamadas à API ficam em `src/services`, e o estado da carteira selecionada em um contexto (`WalletContext`).
+
+## Verificação em duas etapas (TOTP)
+
+Opcional, ativada pelo próprio usuário em **Perfil → Segurança**. Funciona com qualquer app autenticador (Google Authenticator, Microsoft Authenticator...).
+
+- **Algoritmo implementado à mão** (RFC 6238): o app e o servidor guardam o mesmo segredo e calculam `HMAC-SHA1(segredo, tempo / 30 s)`, chegando ao mesmo código de 6 dígitos sem se comunicar. Os testes usam os **vetores oficiais do RFC**.
+- **Ativação em duas etapas**: o segredo (mostrado em QR code) só passa a valer depois que o usuário digita um código correto, assim ninguém se tranca para fora.
+- **Login em duas etapas**: com a senha certa, o `/auth/login` não devolve o JWT, e sim um **bilhete** (`challengeToken`) que expira em 5 minutos; o `/auth/login/totp` troca bilhete + código pelo JWT. O bilhete **não é aceito pela API** (o filtro do JWT o recusa) — sem isso, quem soubesse só a senha poderia pular o código.
+- **Códigos de recuperação**: 8 códigos, mostrados uma única vez, guardados **com hash (BCrypt)** e de uso único, para quem perder o celular.
+- **Proteções**: rate limit na etapa do código (6 dígitos são só 1 milhão de combinações), comparação em tempo constante, tolerância de ±30 s no relógio, e desativar exige um código.
+- **Login com Google não pede TOTP**: a conta Google já tem a própria verificação em duas etapas.
+- **Limitações conhecidas**: o segredo fica no banco sem criptografia adicional, e um mesmo código pode ser reutilizado dentro da janela de 30 s.
 
 ## Assistente com IA (Gemini)
 
@@ -88,7 +100,7 @@ Usuário: "gastei 45 no mercado hoje"
 | XSS / injeção em e-mail | React escapa o conteúdo por padrão; nomes digitados por usuários são escapados antes de entrar nos templates HTML dos e-mails. |
 | Força bruta | Rate limit de 5 tentativas por minuto, por IP, em login, cadastro e recuperação de senha (resposta 429). |
 | Cabeçalhos HTTP | CSP, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` e HSTS. |
-| Falhas de autenticação | Senhas com BCrypt; JWT assinado; token de recuperação de uso único, válido por 1 hora e enviado só por e-mail. |
+| Falhas de autenticação | Senhas com BCrypt; JWT assinado; token de recuperação de uso único, válido por 1 hora e enviado só por e-mail; verificação em duas etapas (TOTP) opcional, com bilhete intermediário que não acessa a API e códigos de recuperação com hash. |
 | Segredos | Nenhuma credencial no repositório: tudo vem de variáveis de ambiente ou de `application-secrets.properties` (no `.gitignore`). |
 | CSRF | Desabilitado de propósito: a API é stateless e usa JWT no cabeçalho, sem cookies de sessão. |
 | Dados pessoais (LGPD) | E-mails são mascarados nos logs; a chave do provedor de e-mail só tem permissão de envio; ao Gemini só vão dados financeiros agregados ou anônimos. |
@@ -131,7 +143,7 @@ cd virta-back-end
 ./mvnw test
 ```
 
-Testes unitários (JUnit 5 + Mockito + AssertJ) cobrem as regras mais sensíveis: controle de acesso por papel, filtros do resumo, regra da carteira padrão, geração do CSV (inclusive a proteção contra injeção) e o rate limit.
+Testes unitários (JUnit 5 + Mockito + AssertJ) cobrem as regras mais sensíveis: controle de acesso por papel, filtros do resumo, regra da carteira padrão, geração do CSV (inclusive a proteção contra injeção), o rate limit, o algoritmo TOTP (vetores oficiais do RFC 6238), os códigos de recuperação e a regra de que o bilhete do login não acessa a API.
 
 ## Variáveis de ambiente
 
@@ -167,6 +179,8 @@ As variáveis `VITE_` entram no momento do build: depois de alterá-las na Verce
 |---|---|
 | `POST /auth/register`, `POST /auth/login`, `POST /auth/google` | Cadastro e login (devolve o JWT) |
 | `POST /auth/forgot-password`, `POST /auth/reset-password` | Recuperação de senha |
+| `POST /auth/login/totp` | Segunda etapa do login (bilhete + código do app ou de recuperação) |
+| `POST /api/v1/users/me/totp/setup`, `/enable`, `/disable` | Ativar e desativar a verificação em duas etapas |
 | `GET/PUT /api/v1/users/me`, `PATCH /api/v1/users/me/password` | Perfil e troca de senha |
 | `GET/POST /api/v1/wallets`, `GET/PUT/DELETE /api/v1/wallets/{id}` | Carteiras |
 | `GET/POST /api/v1/wallets/{id}/members`, `PATCH/DELETE .../members/{userId}` | Membros e papéis |

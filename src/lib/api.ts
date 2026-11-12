@@ -1,10 +1,16 @@
 import { env } from "@/config/env";
 
+/**
+ * Either logged in (token filled) or, when the account has two-step verification,
+ * totpRequired + challengeToken (a 5-minute ticket for the code step).
+ */
 export interface LoginResponse {
-  token: string;
-  id: number;
-  name: string;
-  email: string;
+  token: string | null;
+  id: number | null;
+  name: string | null;
+  email: string | null;
+  totpRequired: boolean;
+  challengeToken: string | null;
 }
 
 export interface ForgotPasswordResponse {
@@ -25,6 +31,15 @@ export async function apiLogin(email: string, password: string): Promise<LoginRe
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
+  });
+  return handleResponse<LoginResponse>(res);
+}
+
+export async function apiLoginTotp(challengeToken: string, code: string): Promise<LoginResponse> {
+  const res = await fetch(`${env.apiUrl}/auth/login/totp`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ challengeToken, code }),
   });
   return handleResponse<LoginResponse>(res);
 }

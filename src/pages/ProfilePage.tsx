@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { updateProfile } from "@/services/userService";
 import { ApiError } from "@/lib/http";
 import { ChangePasswordForm } from "@/components/auth/ChangePasswordForm";
+import { TwoFactorSettings } from "@/components/auth/TwoFactorSettings";
 
 export function ProfilePage() {
   const { t } = useTranslation();
@@ -98,6 +99,7 @@ export function ProfilePage() {
           {t("app.profile.section_security")}
         </h2>
         <ChangePasswordForm />
+        <TwoFactorSettings />
       </section>
     </div>
   );

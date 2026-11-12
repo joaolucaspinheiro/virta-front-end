@@ -1,10 +1,12 @@
-import type { AuthSession } from "@/types/auth";
+import type { AuthProvider, AuthSession } from "@/types/auth";
 import {
   apiForgotPassword,
   apiGoogleLogin,
   apiLogin,
+  apiLoginTotp,
   apiRegister,
   apiResetPassword,
+  type LoginResponse,
 } from "@/lib/api";
 
 /**
@@ -38,6 +40,27 @@ function toAuthError(err: unknown): AuthError {
   return new AuthError("login.messages.generic_error");
 }
 
+/** Thrown by login() when the account has two-step verification: the UI then asks for the code. */
+export class TotpRequiredError extends Error {
+  readonly challengeToken: string;
+  constructor(challengeToken: string) {
+    super("totp_required");
+    this.name = "TotpRequiredError";
+    this.challengeToken = challengeToken;
+  }
+}
+
+/** Builds the session from a successful login answer; refuses an answer without a token. */
+function toSession(data: LoginResponse, provider: AuthProvider): AuthSession {
+  if (!data.token || data.id == null || !data.name || !data.email) {
+    throw new AuthError("login.messages.generic_error");
+  }
+  return {
+    token: data.token,
+    user: { id: String(data.id), name: data.name, email: data.email, provider },
+  };
+}
+
 export interface RegisterInput {
   name: string;
   email: string;
@@ -50,17 +73,22 @@ export interface LoginInput {
 }
 
 export async function login(input: LoginInput): Promise<AuthSession> {
+  let data: LoginResponse;
   try {
-    const data = await apiLogin(input.email, input.password);
-    return {
-      token: data.token,
-      user: {
-        id: String(data.id),
-        name: data.name,
-        email: data.email,
-        provider: "password",
-      },
-    };
+    data = await apiLogin(input.email, input.password);
+  } catch (err) {
+    throw toAuthError(err);
+  }
+  if (data.totpRequired && data.challengeToken) {
+    throw new TotpRequiredError(data.challengeToken);
+  }
+  return toSession(data, "password");
+}
+
+/** Login step 2: the challenge from step 1 + the 6-digit code (or a recovery code). */
+export async function loginWithTotp(challengeToken: string, code: string): Promise<AuthSession> {
+  try {
+    return toSession(await apiLoginTotp(challengeToken, code), "password");
   } catch (err) {
     throw toAuthError(err);
   }
@@ -82,16 +110,7 @@ export async function register(input: RegisterInput): Promise<AuthSession> {
  */
 export async function loginWithGoogle(credential: string): Promise<AuthSession> {
   try {
-    const data = await apiGoogleLogin(credential);
-    return {
-      token: data.token,
-      user: {
-        id: String(data.id),
-        name: data.name,
-        email: data.email,
-        provider: "google",
-      },
-    };
+    return toSession(await apiGoogleLogin(credential), "google");
   } catch (err) {
     throw toAuthError(err);
   }

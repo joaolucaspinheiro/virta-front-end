@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft, ArrowRight, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { paths } from "@/routes/paths";
-import { AuthError, login, loginWithGoogle } from "@/services/authService";
+import {
+  AuthError,
+  TotpRequiredError,
+  login,
+  loginWithGoogle,
+  loginWithTotp,
+} from "@/services/authService";
 import type { AuthSession } from "@/types/auth";
 import { GoogleButton } from "@/components/auth/GoogleButton";
 
@@ -25,6 +31,9 @@ export function LoginForm() {
     email?: string;
     password?: string;
   }>({});
+  // Two-step verification: the ticket from the password step and the typed code.
+  const [challenge, setChallenge] = useState<string | null>(null);
+  const [code, setCode] = useState("");
 
   // Go back to the route the user tried to reach before being blocked.
   const redirectTo =
@@ -51,6 +60,11 @@ export function LoginForm() {
       setSession(session);
       navigate(redirectTo, { replace: true });
     } catch (err) {
+      if (err instanceof TotpRequiredError) {
+        // Password was right: now ask for the code from the authenticator app.
+        setChallenge(err.challengeToken);
+        return;
+      }
       setError(
         err instanceof AuthError
           ? t(err.messageKey)
@@ -65,6 +79,80 @@ export function LoginForm() {
     e.preventDefault();
     if (!validate()) return;
     await authenticate(() => login({ email, password }));
+  }
+
+  async function handleTotpSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!challenge) return;
+    await authenticate(() => loginWithTotp(challenge, code.trim()));
+  }
+
+  function backToPassword() {
+    setChallenge(null);
+    setCode("");
+    setError(null);
+  }
+
+  if (challenge) {
+    return (
+      <form
+        onSubmit={handleTotpSubmit}
+        noValidate
+        className="relative w-full max-w-md rounded-2xl bg-white p-8 lg:p-10 border border-zinc-200 animate-fade-in-up"
+        style={{ boxShadow: "var(--shadow-elegant)" }}
+      >
+        <div className="mb-8 space-y-2 text-center">
+          <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-xl bg-brand-500/10 text-brand-500">
+            <ShieldCheck className="h-6 w-6" aria-hidden="true" />
+          </div>
+          <h2 className="text-3xl font-bold tracking-tight text-zinc-900">{t("login.totp.title")}</h2>
+          <p className="text-sm text-zinc-600">{t("login.totp.description")}</p>
+        </div>
+
+        {error && (
+          <p role="alert" className="text-red-500 text-sm text-center mb-4">{error}</p>
+        )}
+
+        <div className="space-y-5">
+          <div className="space-y-2">
+            <label htmlFor="totp-code" className="text-sm font-medium text-zinc-900">
+              {t("login.totp.code_label")}
+            </label>
+            <input
+              id="totp-code"
+              type="text"
+              autoComplete="one-time-code"
+              autoFocus
+              maxLength={9}
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              placeholder="123456"
+              aria-describedby="totp-hint"
+              className="w-full h-12 px-4 rounded-lg border border-zinc-200 bg-white text-center text-lg tracking-widest text-zinc-900 placeholder:text-zinc-300 outline-none transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10"
+            />
+            <p id="totp-hint" className="text-xs text-zinc-500">{t("login.totp.recovery_hint")}</p>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading || code.trim().length < 6}
+            className="w-full h-12 rounded-lg font-semibold text-white transition-all hover:shadow-lg disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+            style={{ background: "var(--gradient-primary)" }}
+          >
+            {loading ? t("login.actions.loading") : t("login.totp.submit")}
+          </button>
+
+          <button
+            type="button"
+            onClick={backToPassword}
+            className="inline-flex w-full items-center justify-center gap-1.5 text-sm font-medium text-brand-500 hover:underline cursor-pointer"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            {t("login.totp.back")}
+          </button>
+        </div>
+      </form>
+    );
   }
 
   return (

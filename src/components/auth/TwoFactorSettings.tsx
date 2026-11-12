@@ -4,6 +4,8 @@ import { toast } from "sonner";
 import { QRCodeSVG } from "qrcode.react";
 import { Copy, Loader2, ShieldCheck, ShieldOff } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+import { TotpCodeInput } from "@/components/auth/TotpCodeInput";
+import { isCompleteTotpInput } from "@/lib/totp";
 import {
   disableTotp,
   enableTotp,
@@ -28,6 +30,7 @@ export function TwoFactorSettings() {
   const [setup, setSetup] = useState<TotpSetup | null>(null);
   const [recoveryCodes, setRecoveryCodes] = useState<string[]>([]);
   const [code, setCode] = useState("");
+  const [disableWithRecovery, setDisableWithRecovery] = useState(false);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -83,9 +86,10 @@ export function TwoFactorSettings() {
   function disable(e: React.FormEvent) {
     e.preventDefault();
     void run(async () => {
-      await disableTotp(code.trim());
+      await disableTotp(code);
       setEnabled(false);
       setCode("");
+      setDisableWithRecovery(false);
       toast.success(t("app.two_factor.disabled"));
     });
   }
@@ -251,27 +255,26 @@ export function TwoFactorSettings() {
       {/* On: turning off also asks for a code. */}
       {view === "idle" && enabled && (
         <form onSubmit={disable} className="space-y-3">
-          <label htmlFor="totp-disable-code" className="block text-sm text-zinc-600">
-            {t("app.two_factor.disable_description")}
-          </label>
-          <div className="flex flex-wrap gap-2">
-            <input
+          <p className="text-sm text-zinc-600">{t("app.two_factor.disable_description")}</p>
+          <div className="max-w-56">
+            <TotpCodeInput
               id="totp-disable-code"
-              autoComplete="one-time-code"
-              maxLength={9}
               value={code}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder={t("app.two_factor.code_label")}
-              className={`${inputClass} max-w-48 flex-1`}
+              onChange={setCode}
+              recovery={disableWithRecovery}
+              onToggleRecovery={() => {
+                setDisableWithRecovery((v) => !v);
+                setCode("");
+              }}
             />
-            <button
-              type="submit"
-              disabled={busy || code.trim().length < 6}
-              className="h-11 rounded-lg px-4 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent"
-            >
-              {t("app.two_factor.disable")}
-            </button>
           </div>
+          <button
+            type="submit"
+            disabled={busy || !isCompleteTotpInput(code, disableWithRecovery)}
+            className="h-11 rounded-lg px-4 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent"
+          >
+            {t("app.two_factor.disable")}
+          </button>
         </form>
       )}
     </div>

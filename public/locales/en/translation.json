@@ -47,7 +47,9 @@
       "title": "Two-step verification",
       "description": "Enter the 6-digit code from your authenticator app.",
       "code_label": "Code",
-      "recovery_hint": "No phone? Use one of your recovery codes.",
+      "recovery_label": "Recovery code",
+      "use_recovery": "No phone? Use a recovery code",
+      "use_app": "Use the authenticator app code",
       "submit": "Verify",
       "back": "Back to login"
     },

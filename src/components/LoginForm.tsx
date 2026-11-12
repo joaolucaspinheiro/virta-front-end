@@ -13,6 +13,8 @@ import {
 } from "@/services/authService";
 import type { AuthSession } from "@/types/auth";
 import { GoogleButton } from "@/components/auth/GoogleButton";
+import { TotpCodeInput } from "@/components/auth/TotpCodeInput";
+import { isCompleteTotpInput } from "@/lib/totp";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -34,6 +36,7 @@ export function LoginForm() {
   // Two-step verification: the ticket from the password step and the typed code.
   const [challenge, setChallenge] = useState<string | null>(null);
   const [code, setCode] = useState("");
+  const [useRecovery, setUseRecovery] = useState(false);
 
   // Go back to the route the user tried to reach before being blocked.
   const redirectTo =
@@ -84,12 +87,13 @@ export function LoginForm() {
   async function handleTotpSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!challenge) return;
-    await authenticate(() => loginWithTotp(challenge, code.trim()));
+    await authenticate(() => loginWithTotp(challenge, code));
   }
 
   function backToPassword() {
     setChallenge(null);
     setCode("");
+    setUseRecovery(false);
     setError(null);
   }
 
@@ -114,28 +118,21 @@ export function LoginForm() {
         )}
 
         <div className="space-y-5">
-          <div className="space-y-2">
-            <label htmlFor="totp-code" className="text-sm font-medium text-zinc-900">
-              {t("login.totp.code_label")}
-            </label>
-            <input
-              id="totp-code"
-              type="text"
-              autoComplete="one-time-code"
-              autoFocus
-              maxLength={9}
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder="123456"
-              aria-describedby="totp-hint"
-              className="w-full h-12 px-4 rounded-lg border border-zinc-200 bg-white text-center text-lg tracking-widest text-zinc-900 placeholder:text-zinc-300 outline-none transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10"
-            />
-            <p id="totp-hint" className="text-xs text-zinc-500">{t("login.totp.recovery_hint")}</p>
-          </div>
+          <TotpCodeInput
+            id="totp-code"
+            value={code}
+            onChange={setCode}
+            recovery={useRecovery}
+            onToggleRecovery={() => {
+              setUseRecovery((v) => !v);
+              setCode("");
+            }}
+            autoFocus
+          />
 
           <button
             type="submit"
-            disabled={loading || code.trim().length < 6}
+            disabled={loading || !isCompleteTotpInput(code, useRecovery)}
             className="w-full h-12 rounded-lg font-semibold text-white transition-all hover:shadow-lg disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
             style={{ background: "var(--gradient-primary)" }}
           >

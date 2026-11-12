@@ -61,6 +61,7 @@ Opcional, ativada pelo próprio usuário em **Perfil → Segurança**. Funciona 
 - **Login em duas etapas**: com a senha certa, o `/auth/login` não devolve o JWT, e sim um **bilhete** (`challengeToken`) que expira em 5 minutos; o `/auth/login/totp` troca bilhete + código pelo JWT. O bilhete **não é aceito pela API** (o filtro do JWT o recusa) — sem isso, quem soubesse só a senha poderia pular o código.
 - **Códigos de recuperação**: 8 códigos, mostrados uma única vez, guardados **com hash (BCrypt)** e de uso único, para quem perder o celular.
 - **Proteções**: rate limit na etapa do código (6 dígitos são só 1 milhão de combinações), comparação em tempo constante, tolerância de ±30 s no relógio, e desativar exige um código.
+- **Avisos por e-mail**: o dono da conta recebe um aviso quando a verificação é ativada ou desativada e quando um código de recuperação é usado (com quantos restam). O e-mail só **informa** — de propósito, o código **não** é enviado por e-mail, porque quem invadisse o e-mail poderia trocar a senha ("Esqueci a senha") e receber o código, anulando o segundo fator.
 - **Login com Google não pede TOTP**: a conta Google já tem a própria verificação em duas etapas.
 - **Limitações conhecidas**: o segredo fica no banco sem criptografia adicional, e um mesmo código pode ser reutilizado dentro da janela de 30 s.
 

@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, MailCheck } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { paths } from "@/routes/paths";
 import { AuthError, loginWithGoogle, register } from "@/services/authService";
 import type { AuthSession } from "@/types/auth";
 import { GoogleButton } from "@/components/auth/GoogleButton";
 import { PasswordChecklist } from "@/components/auth/PasswordChecklist";
+import { ResendVerificationButton } from "@/components/auth/ResendVerificationButton";
 import { isStrongPassword } from "@/lib/passwordRules";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -25,6 +26,8 @@ export function RegisterForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // After sign-up: the account waits for the e-mail confirmation.
+  const [registeredEmail, setRegisteredEmail] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<{
     name?: string;
     email?: string;
@@ -67,7 +70,42 @@ export function RegisterForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!validate()) return;
-    await authenticate(() => register({ name, email, password }));
+    setError(null);
+    setLoading(true);
+    try {
+      await register({ name, email, password });
+      setRegisteredEmail(email.trim());
+    } catch (err) {
+      setError(err instanceof AuthError ? t(err.messageKey) : t("login.messages.generic_error"));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (registeredEmail) {
+    return (
+      <div
+        className="relative w-full max-w-md rounded-2xl bg-white p-8 lg:p-10 border border-zinc-200 text-center animate-fade-in-up space-y-6"
+        style={{ boxShadow: "var(--shadow-elegant)" }}
+      >
+        <div className="mx-auto grid h-12 w-12 place-items-center rounded-xl bg-brand-500/10 text-brand-500">
+          <MailCheck className="h-6 w-6" aria-hidden="true" />
+        </div>
+        <div className="space-y-2">
+          <h2 className="text-2xl font-bold tracking-tight text-zinc-900">{t("login.verify.pending_title")}</h2>
+          <p className="text-sm text-zinc-600">
+            {t("login.verify.pending_description_before")}{" "}
+            <strong className="text-zinc-900">{registeredEmail}</strong>
+            {t("login.verify.pending_description_after")}
+          </p>
+          <p className="text-xs text-zinc-500">{t("login.verify.pending_hint")}</p>
+        </div>
+        <ResendVerificationButton email={registeredEmail} />
+        <Link to={paths.login} className="block text-sm font-medium text-brand-500 hover:underline">
+          {t("login.verify.go_to_login")}
+        </Link>
+      </div>
+    );
   }
 
   return (

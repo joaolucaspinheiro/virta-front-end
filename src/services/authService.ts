@@ -5,7 +5,10 @@ import {
   apiLogin,
   apiLoginTotp,
   apiRegister,
+  apiResendVerification,
   apiResetPassword,
+  apiVerifyEmail,
+  ApiResponseError,
   type LoginResponse,
 } from "@/lib/api";
 
@@ -38,6 +41,16 @@ function toAuthError(err: unknown): AuthError {
     return new AuthError(err.message);
   }
   return new AuthError("login.messages.generic_error");
+}
+
+/** Right password, but the e-mail was never confirmed: the UI offers to resend the link. */
+export class EmailNotVerifiedError extends AuthError {
+  readonly email: string;
+  constructor(email: string) {
+    super("login.verify.not_verified");
+    this.name = "EmailNotVerifiedError";
+    this.email = email;
+  }
 }
 
 /** Thrown by login() when the account has two-step verification: the UI then asks for the code. */
@@ -77,6 +90,9 @@ export async function login(input: LoginInput): Promise<AuthSession> {
   try {
     data = await apiLogin(input.email, input.password);
   } catch (err) {
+    if (err instanceof ApiResponseError && err.code === "email_not_verified") {
+      throw new EmailNotVerifiedError(input.email);
+    }
     throw toAuthError(err);
   }
   if (data.totpRequired && data.challengeToken) {
@@ -94,11 +110,31 @@ export async function loginWithTotp(challengeToken: string, code: string): Promi
   }
 }
 
-export async function register(input: RegisterInput): Promise<AuthSession> {
+/**
+ * Creates the account. It starts inactive: the back-end e-mails a confirmation link,
+ * so there is no automatic login here.
+ */
+export async function register(input: RegisterInput): Promise<void> {
   try {
     await apiRegister(input.name.trim(), input.email.trim(), input.password);
-    // The register endpoint does not return a token; log in right after.
-    return await login({ email: input.email, password: input.password });
+  } catch (err) {
+    throw toAuthError(err);
+  }
+}
+
+/** Opens the confirmation link (activates the account). */
+export async function verifyEmail(token: string): Promise<void> {
+  try {
+    await apiVerifyEmail(token);
+  } catch (err) {
+    throw toAuthError(err);
+  }
+}
+
+/** Sends a new confirmation link. The answer is neutral (doesn't reveal if the e-mail exists). */
+export async function resendVerification(email: string): Promise<void> {
+  try {
+    await apiResendVerification(email.trim());
   } catch (err) {
     throw toAuthError(err);
   }

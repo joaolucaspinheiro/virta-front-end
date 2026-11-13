@@ -6,6 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { paths } from "@/routes/paths";
 import {
   AuthError,
+  EmailNotVerifiedError,
   TotpRequiredError,
   login,
   loginWithGoogle,
@@ -14,6 +15,7 @@ import {
 import type { AuthSession } from "@/types/auth";
 import { GoogleButton } from "@/components/auth/GoogleButton";
 import { TotpCodeInput } from "@/components/auth/TotpCodeInput";
+import { ResendVerificationButton } from "@/components/auth/ResendVerificationButton";
 import { isCompleteTotpInput } from "@/lib/totp";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -37,6 +39,8 @@ export function LoginForm() {
   const [challenge, setChallenge] = useState<string | null>(null);
   const [code, setCode] = useState("");
   const [useRecovery, setUseRecovery] = useState(false);
+  // Right password, but the account was never confirmed by e-mail.
+  const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
 
   // Go back to the route the user tried to reach before being blocked.
   const redirectTo =
@@ -57,6 +61,7 @@ export function LoginForm() {
 
   async function authenticate(action: () => Promise<AuthSession>) {
     setError(null);
+    setUnverifiedEmail(null);
     setLoading(true);
     try {
       const session = await action();
@@ -67,6 +72,9 @@ export function LoginForm() {
         // Password was right: now ask for the code from the authenticator app.
         setChallenge(err.challengeToken);
         return;
+      }
+      if (err instanceof EmailNotVerifiedError) {
+        setUnverifiedEmail(err.email);
       }
       setError(
         err instanceof AuthError
@@ -167,7 +175,12 @@ export function LoginForm() {
       </div>
 
       {error && (
-        <p className="text-red-500 text-sm text-center mb-4">{error}</p>
+        <p role="alert" className="text-red-500 text-sm text-center mb-4">{error}</p>
+      )}
+      {unverifiedEmail && (
+        <div className="mb-4">
+          <ResendVerificationButton email={unverifiedEmail} />
+        </div>
       )}
 
       <div className="space-y-5">

@@ -17,11 +17,27 @@ export interface ForgotPasswordResponse {
   message: string;
 }
 
+/** Error answered by the API; `code` identifies special cases (e.g. "email_not_verified"). */
+export class ApiResponseError extends Error {
+  readonly status: number;
+  readonly code?: string;
+  constructor(message: string, status: number, code?: string) {
+    super(message);
+    this.name = "ApiResponseError";
+    this.status = status;
+    this.code = code;
+  }
+}
+
 async function handleResponse<T>(res: Response): Promise<T> {
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
     const body = data as Record<string, string>;
-    throw new Error(body.error ?? Object.values(body)[0] ?? "Unexpected error");
+    throw new ApiResponseError(
+      body.error ?? Object.values(body)[0] ?? "Unexpected error",
+      res.status,
+      body.code,
+    );
   }
   return data as T;
 }
@@ -76,6 +92,24 @@ export async function apiResetPassword(token: string, newPassword: string): Prom
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ token, newPassword }),
+  });
+  await handleResponse<unknown>(res);
+}
+
+export async function apiVerifyEmail(token: string): Promise<void> {
+  const res = await fetch(`${env.apiUrl}/auth/verify-email`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token }),
+  });
+  await handleResponse<unknown>(res);
+}
+
+export async function apiResendVerification(email: string): Promise<void> {
+  const res = await fetch(`${env.apiUrl}/auth/resend-verification`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
   });
   await handleResponse<unknown>(res);
 }

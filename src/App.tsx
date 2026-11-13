@@ -16,6 +16,7 @@ import { WalletSettingsPage } from "@/pages/WalletSettingsPage";
 import { ProfilePage } from "@/pages/ProfilePage";
 import { ChangePasswordPage } from "@/pages/ChangePasswordPage";
 import { ReportsPage } from "@/pages/ReportsPage";
+import { VerifyEmailPage } from "@/pages/VerifyEmailPage";
 import "./App.css";
 
 function App() {
@@ -29,6 +30,11 @@ function App() {
           <Route path={paths.forgotPassword} element={<ForgotPasswordPage />} />
           <Route path={paths.resetPassword} element={<ResetPasswordPage />} />
         </Route>
+      </Route>
+
+      {/* E-mail confirmation link: works logged in or out (outside PublicOnlyRoute). */}
+      <Route element={<AuthLayout />}>
+        <Route path={paths.verifyEmail} element={<VerifyEmailPage />} />
       </Route>
 
       {/* Protected: require a session. */}

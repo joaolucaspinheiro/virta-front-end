@@ -7,6 +7,8 @@ export const paths = {
   resetPassword: "/redefinir-senha/:token",
   /** Helper to build the concrete URL with a token. */
   resetPasswordTo: (token: string) => `/redefinir-senha/${token}`,
+  /** Confirmation link sent after sign-up (with :token). */
+  verifyEmail: "/verificar-email/:token",
   app: "/app",
   dashboard: "/app/dashboard",
   transactions: "/app/transacoes",

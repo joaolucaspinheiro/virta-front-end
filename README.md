@@ -1,6 +1,6 @@
 # Virta
 
-[![CI front-end](https://github.com/joaolucaspinheiro/virta/actions/workflows/ci.yml/badge.svg)](https://github.com/joaolucaspinheiro/virta/actions/workflows/ci.yml) [![CI back-end](https://github.com/joaolucaspinheiro/virta-back-end/actions/workflows/ci.yml/badge.svg)](https://github.com/joaolucaspinheiro/virta-back-end/actions/workflows/ci.yml) ![Java 17](https://img.shields.io/badge/Java-17-007396) ![Spring Boot 4](https://img.shields.io/badge/Spring%20Boot-4-6DB33F) ![React 19](https://img.shields.io/badge/React-19-61DAFB) ![PWA](https://img.shields.io/badge/PWA-instal%C3%A1vel-5A0FC8)
+[![CI front-end](https://github.com/joaolucaspinheiro/virta-front-end/actions/workflows/ci.yml/badge.svg)](https://github.com/joaolucaspinheiro/virta-front-end/actions/workflows/ci.yml) [![CI back-end](https://github.com/joaolucaspinheiro/virta-back-end/actions/workflows/ci.yml/badge.svg)](https://github.com/joaolucaspinheiro/virta-back-end/actions/workflows/ci.yml) ![Java 17](https://img.shields.io/badge/Java-17-007396) ![Spring Boot 4](https://img.shields.io/badge/Spring%20Boot-4-6DB33F) ![React 19](https://img.shields.io/badge/React-19-61DAFB) ![PWA](https://img.shields.io/badge/PWA-instal%C3%A1vel-5A0FC8)
 
 **Virta** é um sistema de gestão financeira **pessoal e compartilhada**. Cada pessoa organiza receitas e despesas em **carteiras**, que podem ser divididas com outras pessoas (família, casal, república) com papéis diferentes: **dono**, **editor** e **leitor**. As mudanças aparecem **em tempo real** para quem está com a carteira aberta.
 
@@ -14,7 +14,7 @@ Projeto da Atividade Final da disciplina de Programação para Web (React + Spri
 | **API** | https://virta-back-end.onrender.com |
 | **Documentação da API (Swagger)** | https://virta-back-end.onrender.com/swagger-ui/index.html |
 | Saúde da API (health check) | https://virta-back-end.onrender.com/actuator/health |
-| Repositório do front-end | https://github.com/joaolucaspinheiro/virta |
+| Repositório do front-end | https://github.com/joaolucaspinheiro/virta-front-end |
 | Repositório do back-end | https://github.com/joaolucaspinheiro/virta-back-end |
 
 > O back-end roda no plano gratuito do Render, que "dorme" sem uso. **A primeira requisição pode levar cerca de 1 minuto**; depois disso a resposta é normal.
@@ -143,7 +143,7 @@ A API sobe em `http://localhost:8080` e o Swagger em `http://localhost:8080/swag
 ### Front-end
 
 ```bash
-git clone https://github.com/joaolucaspinheiro/virta.git virta-front-end
+git clone https://github.com/joaolucaspinheiro/virta-front-end.git
 cd virta-front-end
 npm install
 npm run dev

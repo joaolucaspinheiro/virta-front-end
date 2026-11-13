@@ -1,5 +1,7 @@
 # Virta
 
+[![CI front-end](https://github.com/joaolucaspinheiro/virta/actions/workflows/ci.yml/badge.svg)](https://github.com/joaolucaspinheiro/virta/actions/workflows/ci.yml) [![CI back-end](https://github.com/joaolucaspinheiro/virta-back-end/actions/workflows/ci.yml/badge.svg)](https://github.com/joaolucaspinheiro/virta-back-end/actions/workflows/ci.yml) ![Java 17](https://img.shields.io/badge/Java-17-007396) ![Spring Boot 4](https://img.shields.io/badge/Spring%20Boot-4-6DB33F) ![React 19](https://img.shields.io/badge/React-19-61DAFB) ![PWA](https://img.shields.io/badge/PWA-instal%C3%A1vel-5A0FC8)
+
 **Virta** é um sistema de gestão financeira **pessoal e compartilhada**. Cada pessoa organiza receitas e despesas em **carteiras**, que podem ser divididas com outras pessoas (família, casal, república) com papéis diferentes: **dono**, **editor** e **leitor**. As mudanças aparecem **em tempo real** para quem está com a carteira aberta.
 
 Projeto da Atividade Final da disciplina de Programação para Web (React + Spring Boot).
@@ -11,6 +13,7 @@ Projeto da Atividade Final da disciplina de Programação para Web (React + Spri
 | **Aplicação** | https://virta-front-end.vercel.app |
 | **API** | https://virta-back-end.onrender.com |
 | **Documentação da API (Swagger)** | https://virta-back-end.onrender.com/swagger-ui/index.html |
+| Saúde da API (health check) | https://virta-back-end.onrender.com/actuator/health |
 | Repositório do front-end | https://github.com/joaolucaspinheiro/virta |
 | Repositório do back-end | https://github.com/joaolucaspinheiro/virta-back-end |
 
@@ -99,6 +102,7 @@ Usuário: "gastei 45 no mercado hoje"
 - **Autorização no service, não só no front.** Esconder um botão não protege nada; toda regra de papel (ex.: leitor não lança transação, só o dono exclui) é conferida no back-end.
 - **E-mail por API HTTPS (Brevo), não SMTP.** O plano gratuito do Render bloqueia as portas SMTP. O envio é assíncrono (`@Async`), então a tela responde na hora e o tempo de resposta não revela se um e-mail está cadastrado.
 - **Relatório CSV pensado para o Excel em português**: separador `;`, vírgula decimal e BOM UTF-8 (acentos corretos).
+- **Observabilidade**: `GET /actuator/health` informa se a API e o banco estão de pé (útil para monitores de disponibilidade), e em produção os logs saem **estruturados em JSON** (ECS), fáceis de filtrar.
 - **Deploy com Docker** no Render, banco MySQL gerenciado no Aiven e front na Vercel — tudo em planos gratuitos.
 
 ## Segurança (OWASP)
@@ -154,6 +158,8 @@ cd virta-back-end
 ./mvnw test
 ```
 
+Os testes rodam automaticamente a cada push no **GitHub Actions** (selos no topo): no back-end, `./mvnw test`; no front-end, `npm run lint` (ESLint sem nenhum aviso) e `npm run build` (checagem de tipos do TypeScript + build).
+
 Testes unitários (JUnit 5 + Mockito + AssertJ) cobrem as regras mais sensíveis: controle de acesso por papel, filtros do resumo, regra da carteira padrão, geração do CSV (inclusive a proteção contra injeção), o rate limit, o algoritmo TOTP (vetores oficiais do RFC 6238), os códigos de recuperação, a regra de que o bilhete do login não acessa a API e a confirmação de e-mail (conta inativa até o link, link expirado/forjado recusado, login com Google em conta não confirmada).
 
 ## Variáveis de ambiente
@@ -172,6 +178,7 @@ Testes unitários (JUnit 5 + Mockito + AssertJ) cobrem as regras mais sensíveis
 | `GEMINI_MODEL` | Modelo usado pelo assistente, ex.: `gemini-3.6-flash` |
 | `GOOGLE_CLIENT_ID` | Opcional: Client ID do login com Google (há um valor padrão) |
 | `PORT` | Definida pelo Render; localmente o padrão é 8080 |
+| `SPRING_PROFILES_ACTIVE` | `prod` no Render: logs estruturados em JSON (formato ECS) e sem SQL nos logs |
 
 Localmente, os mesmos valores ficam em `application-secrets.properties` (veja o arquivo `application-secrets-example.properties`).
 

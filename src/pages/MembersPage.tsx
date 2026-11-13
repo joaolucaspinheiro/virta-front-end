@@ -28,32 +28,44 @@ export function MembersPage() {
   const walletId = selectedWallet?.id ?? null;
 
   const [members, setMembers] = useState<WalletMember[]>([]);
-  const [loading, setLoading] = useState(true);
+  // The wallet whose members are on screen; "loading" is derived from it.
+  const [loadedFor, setLoadedFor] = useState<number | null>(null);
+  const loading = walletId != null && loadedFor !== walletId;
   const [memberEmail, setMemberEmail] = useState("");
   const [memberRole, setMemberRole] = useState<WalletRole>("VIEWER");
   const [addingMember, setAddingMember] = useState(false);
 
   const isOwner = selectedWallet?.role === "OWNER";
 
+  /** Reloads the list after a change (add/remove/role). */
   async function load(id: number) {
     try {
       setMembers(await listMembers(id));
     } catch (err) {
       fail(err);
-    } finally {
-      setLoading(false);
     }
   }
 
+  // Loads when the wallet changes. State is only set in the promise callbacks.
   useEffect(() => {
-    if (walletId == null) {
-      setLoading(false);
-      return;
-    }
-    setLoading(true);
-    void load(walletId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [walletId]);
+    if (walletId == null) return;
+    let cancelled = false;
+    listMembers(walletId)
+      .then((list) => {
+        if (!cancelled) setMembers(list);
+      })
+      .catch((err: unknown) => {
+        if (!cancelled) {
+          toast.error(err instanceof Error ? err.message : t("login.messages.generic_error"));
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoadedFor(walletId);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [walletId, t]);
 
   function fail(err: unknown) {
     toast.error(

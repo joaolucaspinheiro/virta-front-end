@@ -33,8 +33,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   });
   const [loading, setLoading] = useState(true);
 
-  const reloadWallets = useCallback(async () => {
-    const ws = await listWallets();
+  /** Stores the wallets and keeps the selection valid (falls back to the first one). */
+  const applyWallets = useCallback((ws: Wallet[]) => {
     setWallets(ws);
     setSelectedId((prev) =>
       prev && ws.some((w) => w.id === prev)
@@ -46,10 +46,25 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     setLoading(false);
   }, []);
 
+  const reloadWallets = useCallback(async () => {
+    applyWallets(await listWallets());
+  }, [applyWallets]);
+
+  // First load after login. State is only set in the promise callbacks.
   useEffect(() => {
     if (!isAuthenticated) return;
-    void reloadWallets();
-  }, [isAuthenticated, reloadWallets]);
+    let cancelled = false;
+    listWallets()
+      .then((ws) => {
+        if (!cancelled) applyWallets(ws);
+      })
+      .catch(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isAuthenticated, applyWallets]);
 
   const selectWallet = useCallback((id: number) => {
     setSelectedId(id);

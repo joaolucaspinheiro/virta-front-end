@@ -121,6 +121,12 @@
     }
   },
 
+  "not_found": {
+    "title": "Page not found",
+    "description": "The address may be wrong or the page has moved. How about going back somewhere familiar?",
+    "go_dashboard": "Back to dashboard",
+    "go_login": "Go to login"
+  },
   "app": {
     "logout": "Sign out",
     "nav": {

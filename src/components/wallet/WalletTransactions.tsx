@@ -43,6 +43,12 @@ function byNewest(a: Transaction, b: Transaction): number {
   return b.id - a.id;
 }
 
+/** Transactions (newest first) and the user's categories. */
+async function fetchWalletData(walletId: number) {
+  const [txs, cats] = await Promise.all([listTransactions(walletId), listCategories()]);
+  return { transactions: [...txs].sort(byNewest), categories: cats };
+}
+
 interface Props {
   walletId: number;
   /** OWNER or EDITOR can create/edit/delete; VIEWER is read-only. */
@@ -64,27 +70,40 @@ export function WalletTransactions({ walletId, canWrite }: Props) {
   const [date, setDate] = useState(today());
   const [categoryId, setCategoryId] = useState("none");
 
+  /** Reloads after a change (create/edit/delete). */
   async function load() {
     try {
-      const [txs, cats] = await Promise.all([
-        listTransactions(walletId),
-        listCategories(),
-      ]);
-      setTransactions([...txs].sort(byNewest));
-      setCategories(cats);
+      const data = await fetchWalletData(walletId);
+      setTransactions(data.transactions);
+      setCategories(data.categories);
     } catch (err) {
       toast.error(
         err instanceof Error ? err.message : t("login.messages.generic_error"),
       );
-    } finally {
-      setLoading(false);
     }
   }
 
+  // Loads when the wallet changes. State is only set in the promise callbacks.
   useEffect(() => {
-    void load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [walletId]);
+    let cancelled = false;
+    fetchWalletData(walletId)
+      .then((data) => {
+        if (cancelled) return;
+        setTransactions(data.transactions);
+        setCategories(data.categories);
+      })
+      .catch((err: unknown) => {
+        if (!cancelled) {
+          toast.error(err instanceof Error ? err.message : t("login.messages.generic_error"));
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [walletId, t]);
 
   function resetForm() {
     setType("EXPENSE");

@@ -38,42 +38,42 @@ export function DashboardPage() {
   const { user } = useAuth();
   const { selectedWallet, loading: loadingWallets } = useWallet();
 
-  const [summary, setSummary] = useState<DashboardSummary | null>(null);
-  const [recent, setRecent] = useState<Transaction[]>([]);
-  const [loadingData, setLoadingData] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
-
   const walletId = selectedWallet?.id ?? null;
 
-  // Load summary + recent transactions whenever the selected wallet changes.
+  // The data remembers which wallet it belongs to. "Loading" only shows when the wallet
+  // changes; a live refresh (SSE) keeps the current numbers on screen until the new ones arrive.
+  const [data, setData] = useState<{
+    walletId: number;
+    summary: DashboardSummary | null;
+    recent: Transaction[];
+  } | null>(null);
+  const current = walletId != null && data?.walletId === walletId ? data : null;
+  const summary = current?.summary ?? null;
+  const recent = current?.recent ?? [];
+  const loadingData = walletId != null && current === null;
+
+  // Load summary + recent transactions when the wallet changes or a live update arrives.
   useEffect(() => {
-    if (walletId == null) {
-      setSummary(null);
-      setRecent([]);
-      return;
-    }
-    setLoadingData(true);
-    (async () => {
-      try {
-        const [s, txs] = await Promise.all([
-          getSummary(walletId),
-          listTransactions(walletId),
-        ]);
-        setSummary(s);
+    if (walletId == null) return;
+    let cancelled = false;
+    Promise.all([getSummary(walletId), listTransactions(walletId)])
+      .then(([s, txs]) => {
+        if (cancelled) return;
         const sorted = [...txs].sort((a, b) =>
           a.date !== b.date ? (a.date < b.date ? 1 : -1) : b.id - a.id,
         );
-        setRecent(sorted.slice(0, 5));
-      } catch (err) {
-        toast.error(
-          err instanceof Error ? err.message : t("login.messages.generic_error"),
-        );
-      } finally {
-        setLoadingData(false);
-      }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [walletId, refreshKey]);
+        setData({ walletId, summary: s, recent: sorted.slice(0, 5) });
+      })
+      .catch((err: unknown) => {
+        if (cancelled) return;
+        toast.error(err instanceof Error ? err.message : t("login.messages.generic_error"));
+        setData({ walletId, summary: null, recent: [] });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [walletId, refreshKey, t]);
 
   useEffect(() => {
     if(walletId == null) return;

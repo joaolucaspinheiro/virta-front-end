@@ -17,6 +17,7 @@ import { ProfilePage } from "@/pages/ProfilePage";
 import { ChangePasswordPage } from "@/pages/ChangePasswordPage";
 import { ReportsPage } from "@/pages/ReportsPage";
 import { VerifyEmailPage } from "@/pages/VerifyEmailPage";
+import { NotFoundPage } from "@/pages/NotFoundPage";
 import "./App.css";
 
 function App() {
@@ -52,7 +53,7 @@ function App() {
       </Route>
 
       <Route path="/" element={<Navigate to={paths.dashboard} replace />} />
-      <Route path="*" element={<Navigate to={paths.login} replace />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

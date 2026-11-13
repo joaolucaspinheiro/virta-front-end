@@ -121,6 +121,12 @@
     }
   },
 
+  "not_found": {
+    "title": "Página não encontrada",
+    "description": "O endereço pode estar errado ou a página foi movida. Que tal voltar para um lugar conhecido?",
+    "go_dashboard": "Voltar ao dashboard",
+    "go_login": "Ir para o login"
+  },
   "app": {
     "logout": "Sair",
     "nav": {

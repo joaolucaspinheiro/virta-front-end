@@ -48,10 +48,25 @@ export function CategoriesPage() {
     }
   }
 
+  // First load. State is only set in the promise callbacks.
   useEffect(() => {
-    void load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    let cancelled = false;
+    listCategories()
+      .then((list) => {
+        if (!cancelled) setCategories(list);
+      })
+      .catch((err: unknown) => {
+        if (!cancelled) {
+          toast.error(err instanceof Error ? err.message : t("login.messages.generic_error"));
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [t]);
 
   function fail(err: unknown) {
     toast.error(

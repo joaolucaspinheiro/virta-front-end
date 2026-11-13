@@ -20,4 +20,10 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    // Entry point (no exports) and shadcn/ui primitives (export variants on purpose):
+    // the Fast Refresh "only export components" rule doesn't apply to them.
+    files: ['src/main.tsx', 'src/components/ui/**/*.tsx'],
+    rules: { 'react-refresh/only-export-components': 'off' },
+  },
 ])

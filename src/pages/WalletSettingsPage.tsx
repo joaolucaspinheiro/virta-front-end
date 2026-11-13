@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Loader2, Trash2 } from "lucide-react";
@@ -10,16 +10,18 @@ import { NoWalletSelected } from "@/components/wallet/NoWalletSelected";
 export function WalletSettingsPage() {
   const { t } = useTranslation();
   const { wallets, selectedWallet, loading, reloadWallets } = useWallet();
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState(selectedWallet?.name ?? "");
+  const [description, setDescription] = useState(selectedWallet?.description ?? "");
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    if (selectedWallet) {
-      setName(selectedWallet.name);
-      setDescription(selectedWallet.description ?? "");
-    }
-  }, [selectedWallet]);
+  // Fills the form when the selected wallet changes. Done during render (not in an
+  // effect) so React never paints the form with the previous wallet's values.
+  const [syncedWallet, setSyncedWallet] = useState(selectedWallet);
+  if (selectedWallet !== syncedWallet) {
+    setSyncedWallet(selectedWallet);
+    setName(selectedWallet?.name ?? "");
+    setDescription(selectedWallet?.description ?? "");
+  }
 
   const isOwner = selectedWallet?.role === "OWNER";
   const ownedCount = wallets.filter((w) => w.role === "OWNER").length;

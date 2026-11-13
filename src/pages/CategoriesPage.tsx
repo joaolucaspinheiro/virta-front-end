@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { Loader2, Pencil, Plus, Search, Tag, Trash2 } from "lucide-react";
+import { Pencil, Plus, Search, Tag, Trash2 } from "lucide-react";
+import { EmptyState } from "@/components/EmptyState";
+import { ListSkeleton } from "@/components/LoadingSkeletons";
 import {
   createCategory,
   deleteCategory,
@@ -166,14 +168,24 @@ export function CategoriesPage() {
       </header>
 
       {loading ? (
-        <div className="grid place-items-center py-16">
-          <Loader2 className="h-6 w-6 animate-spin text-brand-500" />
-        </div>
+        <ListSkeleton rows={6} />
       ) : categories.length === 0 ? (
-        <div className="grid place-items-center gap-2 rounded-2xl border border-dashed border-zinc-300 bg-white p-12 text-center">
-          <Tag className="h-8 w-8 text-zinc-300" />
-          <p className="text-sm text-zinc-500">{t("app.categories.empty")}</p>
-        </div>
+        <EmptyState
+          icon={Tag}
+          title={t("app.categories.empty_title")}
+          description={t("app.categories.empty")}
+          action={
+            <button
+              type="button"
+              onClick={openCreate}
+              className="inline-flex h-10 items-center gap-1.5 rounded-lg px-4 font-semibold text-white transition-all hover:shadow-lg cursor-pointer"
+              style={{ background: "var(--gradient-primary)" }}
+            >
+              <Plus className="h-4 w-4" />
+              {t("app.categories.new")}
+            </button>
+          }
+        />
       ) : (
         <>
           {/* Filters: search by name + type */}

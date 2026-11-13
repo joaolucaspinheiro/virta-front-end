@@ -4,11 +4,13 @@ import { toast } from "sonner";
 import {
   ArrowDownRight,
   ArrowUpRight,
-  Loader2,
   Pencil,
   Plus,
+  ReceiptText,
   Trash2,
 } from "lucide-react";
+import { EmptyState } from "@/components/EmptyState";
+import { ListSkeleton } from "@/components/LoadingSkeletons";
 import {
   createTransaction,
   deleteTransaction,
@@ -206,13 +208,27 @@ export function WalletTransactions({ walletId, canWrite }: Props) {
       </div>
 
       {loading ? (
-        <div className="grid place-items-center py-10">
-          <Loader2 className="h-6 w-6 animate-spin text-brand-500" />
-        </div>
+        <ListSkeleton bare rows={5} />
       ) : transactions.length === 0 ? (
-        <p className="py-8 text-center text-sm text-zinc-500">
-          {t("app.transactions.empty")}
-        </p>
+        <EmptyState
+          compact
+          icon={ReceiptText}
+          title={t("app.transactions.empty_title")}
+          description={t("app.transactions.empty")}
+          action={
+            canWrite && (
+              <button
+                type="button"
+                onClick={openCreate}
+                className="inline-flex h-9 items-center gap-1.5 rounded-lg px-4 text-sm font-semibold text-white transition-all hover:shadow-lg cursor-pointer"
+                style={{ background: "var(--gradient-primary)" }}
+              >
+                <Plus className="h-4 w-4" />
+                {t("app.transactions.new")}
+              </button>
+            )
+          }
+        />
       ) : (
         <ul className="divide-y divide-zinc-100">
           {transactions.map((tx) => {

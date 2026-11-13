@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Loader2 } from "lucide-react";
+import { ListSkeleton } from "@/components/LoadingSkeletons";
 import { useWallet } from "@/context/WalletContext";
 import { WalletTransactions } from "@/components/wallet/WalletTransactions";
 import { NoWalletSelected } from "@/components/wallet/NoWalletSelected";
@@ -9,11 +9,7 @@ export function TransactionsPage() {
   const { selectedWallet, loading } = useWallet();
 
   if (loading) {
-    return (
-      <div className="grid place-items-center py-16">
-        <Loader2 className="h-6 w-6 animate-spin text-brand-500" />
-      </div>
-    );
+    return <ListSkeleton rows={6} />;
   }
 
   const canWrite =

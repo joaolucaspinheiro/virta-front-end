@@ -7,6 +7,7 @@ import { NoWalletSelected } from "@/components/wallet/NoWalletSelected";
 import { getSummary } from "@/services/transactionService";
 import { downloadStatement } from "@/services/reportServices";
 import { formatCurrency, formatMonth } from "@/lib/format";
+import { ListSkeleton } from "@/components/LoadingSkeletons";
 import type { DashboardSummary, TransactionType } from "@/types/transaction";
 
 type TypeFilter = "ALL" | TransactionType;
@@ -301,9 +302,7 @@ export function ReportsPage() {
 
           {/* ---------- Results ---------- */}
           {!rangeValid ? null : loading ? (
-            <div className="grid place-items-center py-16">
-              <Loader2 className="h-6 w-6 animate-spin text-brand-500" />
-            </div>
+            <ListSkeleton rows={4} />
           ) : summary && summary.transactionCount > 0 ? (
             <>
               <p className="text-sm text-zinc-500" aria-live="polite">

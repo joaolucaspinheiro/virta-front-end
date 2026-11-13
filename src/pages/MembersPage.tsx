@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { Loader2, Trash2, UserPlus } from "lucide-react";
+import { Trash2, UserPlus } from "lucide-react";
+import { ListSkeleton } from "@/components/LoadingSkeletons";
 import {
   addMember,
   listMembers,
@@ -121,11 +122,7 @@ export function MembersPage() {
   }
 
   if (loadingWallet) {
-    return (
-      <div className="grid place-items-center py-16">
-        <Loader2 className="h-6 w-6 animate-spin text-brand-500" />
-      </div>
-    );
+    return <ListSkeleton rows={3} />;
   }
 
   if (!selectedWallet) {
@@ -184,9 +181,7 @@ export function MembersPage() {
         )}
 
         {loading ? (
-          <div className="grid place-items-center py-10">
-            <Loader2 className="h-6 w-6 animate-spin text-brand-500" />
-          </div>
+          <ListSkeleton bare rows={3} />
         ) : (
           <ul className="divide-y divide-zinc-100">
             {members.map((member) => (

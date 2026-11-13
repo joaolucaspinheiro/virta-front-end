@@ -4,9 +4,15 @@ import { toast } from "sonner";
 import {
   ArrowDownRight,
   ArrowUpRight,
-  Loader2,
+  BarChart3,
+  Plus,
+  ReceiptText,
   Wallet as WalletIcon,
 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { paths } from "@/routes/paths";
+import { EmptyState } from "@/components/EmptyState";
+import { DashboardSkeleton } from "@/components/LoadingSkeletons";
 import {
   Bar,
   BarChart,
@@ -91,11 +97,7 @@ export function DashboardPage() {
   );
 
   if (loadingWallets) {
-    return (
-      <div className="grid place-items-center py-16">
-        <Loader2 className="h-6 w-6 animate-spin text-brand-500" />
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   return (
@@ -112,9 +114,7 @@ export function DashboardPage() {
       {!selectedWallet ? (
         <NoWalletSelected />
       ) : loadingData || !summary ? (
-        <div className="grid place-items-center py-16">
-          <Loader2 className="h-6 w-6 animate-spin text-brand-500" />
-        </div>
+        <DashboardSkeleton />
       ) : (
         <>
           {/* Indicators */}
@@ -145,9 +145,12 @@ export function DashboardPage() {
               {t("app.dashboard.chart_title")}
             </h2>
             {chartData.length === 0 ? (
-              <p className="py-10 text-center text-sm text-zinc-500">
-                {t("app.dashboard.no_transactions")}
-              </p>
+              <EmptyState
+                compact
+                icon={BarChart3}
+                title={t("app.dashboard.chart_empty_title")}
+                description={t("app.dashboard.chart_empty_description")}
+              />
             ) : (
               <div className="h-72 w-full">
                 <ResponsiveContainer width="100%" height="100%">
@@ -217,9 +220,22 @@ export function DashboardPage() {
               {t("app.dashboard.recent")}
             </h2>
             {recent.length === 0 ? (
-              <p className="py-8 text-center text-sm text-zinc-500">
-                {t("app.dashboard.no_transactions")}
-              </p>
+              <EmptyState
+                compact
+                icon={ReceiptText}
+                title={t("app.dashboard.empty_title")}
+                description={t("app.dashboard.no_transactions")}
+                action={
+                  <Link
+                    to={paths.transactions}
+                    className="inline-flex h-9 items-center gap-1.5 rounded-lg px-4 text-sm font-semibold text-white transition-all hover:shadow-lg"
+                    style={{ background: "var(--gradient-primary)" }}
+                  >
+                    <Plus className="h-4 w-4" />
+                    {t("app.dashboard.empty_action")}
+                  </Link>
+                }
+              />
             ) : (
               <ul className="divide-y divide-zinc-100">
                 {recent.map((tx) => {

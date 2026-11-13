@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { Loader2, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
+import { ListSkeleton } from "@/components/LoadingSkeletons";
 import { deleteWallet, updateWallet } from "@/services/walletService";
 import { useWallet } from "@/context/WalletContext";
 import { RoleBadge } from "@/components/wallet/RoleBadge";
@@ -66,11 +67,7 @@ export function WalletSettingsPage() {
   }
 
   if (loading) {
-    return (
-      <div className="grid place-items-center py-16">
-        <Loader2 className="h-6 w-6 animate-spin text-brand-500" />
-      </div>
-    );
+    return <ListSkeleton rows={2} />;
   }
 
   return (
